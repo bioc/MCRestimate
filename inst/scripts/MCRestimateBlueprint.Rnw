@@ -1,0 +1,466 @@
+%\VignetteIndexEntry{MCRestimat: Classification tool}
+%\VignetteDepends{randomForest, pamr,e1071,xtable, RColorBrewer}
+%\VignetteKeywords{molecular markers - classification - metagenes}
+%\VignettePackage{}
+
+
+% Notes
+% library(tools)
+%
+%
+% Attention the package containing the data must be installed for Sweave !
+% Attention keep the one x11() window which is used and started by Sweave !
+
+
+
+\documentclass[a4paper]{article}
+
+
+\usepackage{times}
+\usepackage{a4wide}
+
+
+\begin{document}
+
+\section*{Using MCRestimate - Blueprint}
+
+This vignette is mainly for the purpose to run it with new data and get a nice
+output. Furthermore it shows one way how the process can be parallelised. To use the
+vignette with new data the user has to change some of the parameters
+described in the next section and after that run the vignette using {\it
+Sweave}. After a while she/he gets a latex file with the results of the new
+misclassification rate estimation for the new data and some choosen classification methods.
+
+
+\subsubsection*{Arguments for the classification}
+
+<<libraries,results=hide,echo=FALSE>>=
+library(MCRestimate)
+library(xtable)
+r.forest <- NULL
+r.pam <- NULL
+r.logReg <- NULL
+r.svm <- NULL
+r.gpls <- NULL
+options(width=50)
+savepdf =function(x,file,w=10,h=5){pdf(file=file,width=w,height=h);x;dev.off()}
+@
+
+{\bf classification methods:} First the user has to choose which classification methods (from the ones that
+are up to now implemented in MCRestimate) should be used for the
+classification. {\it RF} and {\it GPLS} are here much faster than the other
+methods because for this methods there is no parameter optimization.
+
+<<methods>>=
+RF     <- TRUE
+PAM    <- TRUE
+PLR    <- TRUE
+SVM    <- FALSE
+GPLS   <- FALSE
+@
+
+{\bf further classification information:} If the user might want to have the
+information which genes plays the most important role for each classification
+method, she/he must set the corresponding parameter. Up to now this feature is only availabel for {\it random forest} and {\it pam}.
+
+<<methodsInfo>>=
+RF.info     <- TRUE
+PAM.info    <- TRUE
+PLR.info    <- FALSE
+SVM.info    <- FALSE
+GPLS.info   <- FALSE
+@
+
+
+The file which includes the expression set or the eSRG set and the name of the phenodata column that should be used for the classification must be specified. Additionally it
+is possible the set the parameter {\it ref.class} if the user wishes to
+compare one class against all other classes (if there are more than two
+classes in the phenodata).
+
+<<>>=
+#
+## MAIN ARGUMENST ###
+#
+DataSet            <- "eset.RData"  # the Expression Set
+class.colum        <- "sex"  # the name of classification column
+ref.class          <- NULL
+@
+
+
+The gene selection and metagene function and parameters for these functions
+(that should be optimized) are give.
+
+<<>>=
+thePreprocessingfunktionsRF        <- c("varSel.highest.var")
+thePreprocessingfunktionsPAM       <- c("varSel.highest.var")
+thePreprocessingfunktionsPLR       <- c("varSel.highest.var")
+thePreprocessingfunktionsSVM       <- c("varSel.highest.var","varSel.svm.rfe")
+thePreprocessingfunktionsGPLS      <- c("varSel.highest.var")
+parameter.for.preprocessing        <- "list(var.numbers=c(1000))"
+@
+
+{\bf Parameter for the plot of the results (see man page for details):} Here
+we don't want to have any specific labels in the resulting plot.
+<<>>=
+#
+## PLOT PARAMETER ###
+#
+plot.label               <- NULL
+rownames.from.object     <- FALSE
+@
+
+{\bf The Cross-validation parameter (see man page for details):} For time
+reasons here we choose very small values. Normally the values for {\it cross.outer} and
+{\it cross.inner} should be at least 5.
+<<>>=
+#
+## ARGUMENTS FOR CROSS-VALIDSATION ###
+#
+cross.outer        <- 4
+cross.repeat       <- 6
+cross.inner        <- 3
+@
+
+{\bf Parameters for the different classification methods (that should be
+optimized):} Here for the method {\it PAM} we don't specify the thresholds themselfs but
+only specify the number of thresholds that should be used. In a later part of the
+vignette (code not shown) appropriate thresholds are choosen. 
+
+
+
+<<>>=
+#
+## PARAMETER FOR DIFFERENT CLASSIFICATION METHODS ###
+#
+number.thresholds  <- 4
+kappa.range        <- "10^seq(3,5,1)"
+gamma.range        <- "2^(-1:1)"
+cost.range         <- "2^(-1:1)"
+@
+
+
+
+
+
+<<choosingTh , echo=FALSE>>=
+if(PAM){
+the.expression.set <- get(load(DataSet))
+if (class(the.expression.set)=="exprSetRG")
+  {       eeset <- getExprSetLogRatio (the.expression.set)
+   resultfactor <- class.factor.format(eeset,class.colum,ref.class)
+           newx <- rbind(exprs(getExprSetGreen(the.expression.set)), exprs(getExprSetRed(the.expression.set)))
+           for (i in 1:length(thePreprocessingfunktionsPAM))
+            newx <-get(thePreprocessingfunktionsPAM)(newx,resultfactor)$matrix
+           n    <- nrow(newx)/2
+           newx <- newx[1:n,] - newx[(n+1):(2*n),]
+} else{
+   resultfactor <- class.factor.format(the.expression.set,class.colum,ref.class)
+   newx <-exprs(the.expression.set)
+   for (i in 1:length(thePreprocessingfunktionsPAM))
+     newx <-get(thePreprocessingfunktionsPAM)(newx,resultfactor)$matrix
+}
+
+pam <- pamr.train(list(x=newx,y=resultfactor),n.threshold=number.thresholds+1)
+thresholds <- rev(pam$threshold)[-1]
+thresholds
+}
+@
+
+Now the whole process will be split into subprocesses. 
+
+<<P>>=
+numberOfProcesses     <- 3
+RepetitionsPerProcess <- ceiling(cross.repeat/numberOfProcesses)
+@
+
+So we parallelised our calculations in the following way. If there are
+\Sexp{cross.repeat} repeats in total, 
+we produce  \Sexp{numberOfProcesses} R scrips,
+each of which do the same calculation but only do
+\Sexp{RepetitionsPerProcess} repeats. 
+The code that produces the R files is not shown here.
+
+{\it RepetitionsPerProcess} 
+
+<<Paral,echo=FALSE>>=
+
+if (!is.null(ref.class))
+  resRef <- paste("ref.class<-\"",ref.class,"\"",sep="") else
+  resRef <- "ref.class=NULL"
+
+if(!is.null(plot.label))
+   resPl  <- paste("plot.label<-\"",plot.label,"\"",sep="") else
+   resPl  <- "plot.label=NULL"
+
+allText   <- scan("Template.R","character",sep="\n")
+possSeed  <- 122 + (1:numberOfProcesses)
+for ( j in possSeed){
+ PredTxt <- c(paste("SEED<-",j),
+             paste("RF<-",RF),
+             paste("PAM<-",PAM),
+             paste("PLR<-",PLR),
+             paste("SVM<-",SVM),
+             paste("GPLS<-",GPLS),
+             paste("RF.info<-",RF.info),
+             paste("PAM.info<-",PAM.info),
+             paste("PLR.info<-",PLR.info),
+             paste("SVM.info<-",SVM.info),
+             paste("GPLS.info<-",GPLS.info),
+             paste("DataSet<- \"",DataSet,"\"",sep=""),
+             paste("class.colum<-\"",class.colum,"\"",sep=""),
+             resRef,
+             paste("thePreprocessingfunktionsRF<-\"",thePreprocessingfunktionsRF,"\"",sep=""),
+	     paste("thePreprocessingfunktionsPAM<-\"",thePreprocessingfunktionsPAM,"\"",sep=""),
+	     paste("thePreprocessingfunktionsPLR<-\"",thePreprocessingfunktionsPLR,"\"",sep=""),
+	     paste("thePreprocessingfunktionsSVM<-\"",thePreprocessingfunktionsSVM,"\"",sep=""),
+	     paste("thePreprocessingfunktionsGPLS<-\"",thePreprocessingfunktionsGPLS,"\"",sep=""),
+
+             paste("cluster.fun<-\"",cluster.fun,"\"",sep=""),
+             paste("parameter.for.preprocessing <-",parameter.for.preprocessing),
+             resPl,
+             paste("cross.outer<-",cross.outer),
+             paste("cross.repeat<-",RepetitionsPerProcess),
+             paste("cross.inner<-",cross.inner),
+	     paste("thresholds<- c(",paste(thresholds,collapse=","),")",sep=""),
+             paste("kappa.range<-",kappa.range),
+             paste("gamma.range<-",gamma.range),
+             paste("cost.range <-",cost.range))
+result <- c(PredTxt,allText)
+ww <- file(paste("Pscript",j,".R",sep=""),open="w")
+writeLines(result,con=ww)
+close(ww)
+}
+@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+After the scripts are produced they can be  executed in parallel. Here we
+don't execute them in parallel but one after another.
+
+<<the call that executes the scripts in parallel>>=
+for ( j in possSeed){ system(paste("R --no-save <",paste("Pscript",j,".R",sep="")))}
+@
+The scripts produce R files, each containing an object of class
+MCRestimate. A merge functions exists, that combines objects of class
+MCRestimate. The code is not shown here.
+
+<<putting the stuff together,echo=FALSE>>=
+if(RF){
+ ForestList <- vector(mode="list",length=length(possSeed))
+ for ( j in 1:length(possSeed))
+   ForestList[[j]] <- get(load(paste("backRF",possSeed[j],".RData",sep="")))
+ r.forest <-MCRestimateMerge(ForestList)
+save(r.forest,file="backRF.RData")
+}
+
+if(GPLS){
+ GplsList <- vector(mode="list",length=length(possSeed))
+ for ( j in 1:length(possSeed))
+   GplsList[[j]] <- get(load(paste("backGPLS",possSeed[j],".RData",sep="")))
+ r.gpls   <-MCRestimateMerge(GplsList)
+ save(r.gpls,file="backGPLS.RData")
+}
+
+if(PAM){
+ PamList <- vector(mode="list",length=length(possSeed))
+ for ( j in 1:length(possSeed))
+   PamList[[j]] <- get(load(paste("backPAM",possSeed[j],".RData",sep="")))
+ r.pam   <-MCRestimateMerge(PamList)
+ save(r.pam,file="backPAM.RData")
+}
+
+if(PLR){
+ PlrList <- vector(mode="list",length=length(possSeed))
+ for ( j in 1:length(possSeed))
+   PlrList[[j]] <- get(load(paste("backlogReg",possSeed[j],".RData",sep="")))
+ r.logReg   <-MCRestimateMerge(PlrList)
+ save(r.logReg,file="backPLR.RData")
+}
+
+if(SVM){
+ SvmList <- vector(mode="list",length=length(possSeed))
+ for ( j in 1:length(possSeed))
+   SvmList[[j]] <- get(load(paste("backSVM",possSeed[j],".RData",sep="")))
+ r.svm <-MCRestimateMerge(SvmList)
+ save(r.svm,file="backSVM.RData")
+}
+@
+
+
+\subsubsection*{Classification}
+
+Now the results of the classification methods are shown.
+
+{\bf RF:}
+
+<<rf.save,echo=FALSE,results=hide>>=
+if(RF)
+savepdf(plot(r.forest,rownames.from.object=rownames.from.object, main="Random Forest"),"image1-RF.pdf")
+@
+
+<<rf.show,echo=FALSE>>=
+if(RF)
+r.forest
+@
+
+<<important.genes,echo=FALSE>>=
+if(RF.info)
+ important.variable.names(r.forest,
+		      file="important_gene_RF",
+		      main="important genes RF",
+		      xlab="Number of genes")
+@
+\smallskip
+
+
+{\bf GPLS:}
+
+<<gpls.save,echo=FALSE,results=hide>>=
+if(GPLS)
+savepdf(plot(r.gpls,rownames.from.object=rownames.from.object, main="GPLS"),"image1-GPLS.pdf")
+@
+
+<<gpls.show,echo=FALSE>>=
+if(GPLS)
+r.gpls
+@
+
+<<important.genes,echo=FALSE>>=
+if(GPLS.info)
+ important.variable.names(r.gpls,
+		      file="important_gene_GPLS",
+		      main="important genes GPLS",
+		      xlab="Number of genes")
+@
+
+\smallskip
+
+{\bf PAM:} 
+
+<<pam.show,echo=FALSE>>=
+if(PAM)
+r.pam
+@
+
+<<pam.save,echo=FALSE,results=hide>>=
+if(PAM)
+savepdf(plot(r.pam,rownames.from.object=rownames.from.object,main="PAM"),"image1-PAM.pdf")
+@
+
+<<important.genes,echo=FALSE>>=
+if(PAM.info)
+ important.variable.names(r.pam,
+		      file="important_gene_PAM",
+		      main="important genes PAM",
+		      xlab="Number of genes")
+@
+
+\smallskip
+{\bf Penalised logistic regression:}
+
+<<logReg.show,echo=FALSE>>=
+if(PLR)
+r.logReg
+@
+
+<<logReg.save,echo=FALSE,results=hide>>=
+if(PLR)
+savepdf(plot(r.logReg,rownames.from.object=rownames.from.object,main="Penalised logistic regression"),"image1-plr.pdf")
+@
+
+<<important.genes,echo=FALSE>>=
+if(PLR.info)
+ important.variable.names(r.logReg,
+                      file="important_gene_PLR",
+		      main="important genes PLR",
+		      xlab="Number of genes")
+@
+
+\smallskip
+
+{\bf SVM:} 
+
+<<svm.show,echo=FALSE>>=
+if(SVM)
+r.svm
+@
+
+<<svm.save,echo=FALSE,results=hide>>=
+if(SVM)
+savepdf(plot(r.svm,rownames.from.object=rownames.from.object, main="SVM"),"image1-SVM.pdf")
+@
+
+<<important.genes,echo=FALSE>>=
+if(SVM.info)
+ important.variable.names(r.svm,
+                      file="important_gene_SVM",
+		      main="important genes SVM",
+		      xlab="Number of genes")
+@
+
+\subsection*{Summary}
+
+
+<<make.table,echo=FALSE>>=
+method.vector <- c(RF,PAM,PLR,SVM,GPLS)
+method.list <- list(r.forest,r.pam,r.logReg,r.svm,r.gpls)[method.vector]
+name.list <- c("RF","PAM","logReg","SVM","GPLS")[method.vector]
+conf.table <-MCRconfusion(method.list, col.names=name.list)
+MKWS <- sum(conf.table[nrow(conf.table),-ncol(conf.table)])>0
+if(MKWS){
+table.1 <- MCRwrongsamples(method.list, col.names=name.list,rownames=rownames.from.object)
+}
+@
+
+
+<<writinglatex,results=tex,echo=FALSE>>=
+if(MKWS){xtable(table.1,"Misclassified sample",label="table.1")}
+xtable(conf.table,"Overall number of misclassifications",label="conf.table",display=rep("d",sum(method.vector)+2))
+@
+
+
+%\input{table.1}
+%\input{conf.table}
+
+\begin{figure}[htbp]
+ \begin{center}
+   \includegraphics[width=0.8\textwidth]{image1-RF}\\
+   \includegraphics[width=0.8\textwidth]{image1-PAM}
+ \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+ \begin{center}
+   \includegraphics[width=0.8\textwidth]{image1-plr}\\
+   \includegraphics[width=0.8\textwidth]{image1-SVM}
+ \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+ \begin{center}
+   \includegraphics[width=0.8\textwidth]{image1-GPLS}
+ \end{center}
+\end{figure}
+
+
+Because we wanted to have additional information about the genes that have
+been used for the classification here see the plot with the frequency of the
+number of genes that are most important for the classification methods.
+
+\begin{figure}[htbp]
+ \begin{center}
+   \includegraphics[width=0.8\textwidth]{important_gene_RF_freq}\\
+   \includegraphics[width=0.8\textwidth]{important_gene_PAM_freq}
+ \end{center}
+\end{figure}
+
+
+
+
+
+
+
+\end{document}
