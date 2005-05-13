@@ -24,7 +24,7 @@ MCRestimate(eset,
             information=TRUE,
             thePreprocessingMethods=c(variableSel.fun,cluster.fun))}
 \arguments{
-  \item{eset}{an object of class \code{exprSet} or class \code{\link{exprSetRG-class}}}
+  \item{eset}{an object of class \code{exprSet} or class \code{\link[arrayMagic]{exprSetRG-class}}}
   \item{class.column}{a number or a character string which indicated the column of the
 expression set's phenodata containing the class label}
   \item{reference.class}{a character string - the name of one class - if
@@ -70,7 +70,7 @@ will form the second class }
    selection function.
 
  If MCRestimate is used with an object of class
- \code{\link{exprSetRG-class}}, the preprocessing steps can use the
+ \code{\link[arrayMagic]{exprSetRG-class}}, the preprocessing steps can use the
  green and the red channel seperately but the classification methods
  works with green channel - red channel.
 
