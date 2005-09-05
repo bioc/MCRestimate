@@ -1,7 +1,7 @@
 \name{intersectList}
 \alias{intersectList}
 \title{A function for creating a all possible intersects for a list of sets.}
-\usage{intersect.list <- function (x)}
+\usage{intersectList(x)}
 
 \arguments{
   \item{x}{a \code{list}}

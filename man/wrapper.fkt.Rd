@@ -15,7 +15,7 @@ function \code{\link{MCRestimate}}}
 RF.wrap(x,y,\dots)
 PAM.wrap(x,y,threshold,\dots)
 PLR.wrap(x,y,kappa=0,eps=1e-4,...)
-SVM.wrap(x,y,gamma = NULL, kernel = "radial", ...))
+SVM.wrap(x,y,gamma = NULL, kernel = "radial", ...)
 GPLS.wrap(x,y,\dots)
 }
 

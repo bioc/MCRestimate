@@ -5,7 +5,7 @@
 Multiclass approach where k binary SVM classifiers are constructed for a classification problem with k classes: Every classifier is trained to distinguish samples of one class from samples of all other classes. For prediction of the class of a new sample, the sample is classified by all k classifiers, and the class corresponding to the classifier with the maximum decision value is chosen.
 }
 \usage{
-SVM.OVA.wrap(x,y,gamma = NULL, kernel = "radial", ...))
+SVM.OVA.wrap(x,y,gamma = NULL, kernel = "radial", ...)
 }
 \arguments{
   \item{x,y}{x is a matrix where each row refers to a sample and  each colum refers to a gene; y is a factor which includes the class for each sample}
