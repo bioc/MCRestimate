@@ -11,7 +11,7 @@ identity <- function(sample.gene.matrix,classfactor,...) list(matrix=sample.gene
 varSel.highest.t.stat <- function(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=500,...)
   {if (nlevels(classfactor)>2)stop("The gene reduction function 'varSel.highest.t.stat' only works with two classes. Please choose another gene reduction function or use a data set with only two classes.")
    if(is.null(theParameter))
- { require(arrayMagic)
+ { require(genefilter)
    tscores                <- rowttests(sample.gene.matrix,classfactor)$statistic
    selection              <- order(abs(tscores),decreasing=TRUE)[1:var.numbers]
   theParameter            <- rep(TRUE,nrow(sample.gene.matrix))
@@ -27,7 +27,7 @@ varSel.highest.t.stat <- function(sample.gene.matrix,classfactor,theParameter=NU
 varSel.highest.t.stat.eSRG <- function(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=500,...)
   {if (nlevels(classfactor)>2)stop("The gene reduction function 'varSel.highest.t.stat' only works with two classes. Please choose another gene reduction function or use a data set with only two classes.")
    if(is.null(theParameter))
- { require(arrayMagic)
+ { require(genefilter)
    m                     <- nrow(sample.gene.matrix)/2
    new.matr              <- sample.gene.matrix[1:m,]-sample.gene.matrix[(m+1):(2*m),]
    tscores               <- rowttests(new.matr,classfactor)$statistic
