@@ -127,6 +127,7 @@ cluster.kmeans.mean<- function(sample.gene.matrix ,classfactor, theParameter=NUL
   cluster.gene.matrix <- matrix(NA,nrow=number.of.cluster, ncol=ncol(sample.gene.matrix))
   for (i in 1:number.of.cluster)
    cluster.gene.matrix[i,] <- colMeans(sample.gene.matrix[theParameter$cluster==i,,drop=FALSE])
-  
+  rownames(cluster.gene.matrix) <- paste("Cluster",1:nrow(cluster.gene.matrix),sep="_")
+  colnames(cluster.gene.matrix) <- colnames(sample.gene.matrix)
   return(list(matrix=cluster.gene.matrix,parameter=theParameter))
 }
