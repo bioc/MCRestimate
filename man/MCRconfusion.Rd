@@ -38,10 +38,10 @@ MCRconfusion(x,
 
 \examples{
 library(MCRestimate)
-data(eset)
-result1 <- MCRestimate(eset,"cov1",classification.fun="RF.wrap",cross.outer=2,cross.repeat=2)
-result2 <- MCRestimate(eset,"cov1",classification.fun="PAM.wrap",poss.parameters=list(threshold=c(0.5,1)),cross.inner=3,cross.outer=2,cross.repeat=2)
-MCRwrongsamples(list(result1,result2),subgroup=1,col.names=c("Random Forest","PAM"))
+data(exSet)
+result1 <- MCRestimate(exSet,"sex",classification.fun="RF.wrap",cross.outer=2,cross.repeat=2)
+result2 <- MCRestimate(exSet,"sex",classification.fun="PAM.wrap",poss.parameters=list(threshold=c(0.5,1)),cross.inner=3,cross.outer=2,cross.repeat=2)
+MCRwrongsamples(list(result1,result2),subgroup="Male",col.names=c("Random Forest","PAM"))
 MCRconfusion(list(result1,result2),col.names=c("Random Forest","PAM"))
 }
 

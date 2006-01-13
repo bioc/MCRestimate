@@ -83,8 +83,8 @@ will form the second class }
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}, contributions from Patrick Warnat \url{mailto:p.warnat@dkfz-heidelberg.de}}
 \examples{
 library(MCRestimate)
-data(eset)
-result <- MCRestimate(eset,"cov1",classification.fun="RF.wrap",cross.outer=4,cross.repeat=3)
+data(exSet)
+result <- MCRestimate(exSet,"type",classification.fun="RF.wrap",cross.outer=4,cross.repeat=3)
 result
 if (interactive()) {
   x11(width=9, height=4)}

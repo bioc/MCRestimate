@@ -19,7 +19,7 @@
 \value{A factor of length nrow(pData(x))}
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}}
 \examples{library(MCRestimate)
-data(eset)
-class.factor.format(eset, "cov3",reference.class=1)}
+data(exSet)
+class.factor.format(exSet, "type")}
 
 \keyword{}
