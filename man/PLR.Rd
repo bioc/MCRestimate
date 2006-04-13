@@ -30,8 +30,8 @@
 
 \examples{
 library(golubEsets)
-data(golubMerge)
-eSet<-golubMerge
+data(Golub_Merge)
+eSet<-Golub_Merge
 X0 <- t(exprs(eSet))
 m <- nrow(X0); n <- ncol(X0)
 y <- pData(eSet)$ALL.AML
@@ -39,9 +39,10 @@ f <- PLR(X0, y,kappa=10^seq(0, 7, 0.5))
 if (interactive()) {
   x11(width=9, height=4)
   par(mfrow=c(1,2))
-  }
 plot(log10(f$kappas), f$aics, type="l",main="Akaike's Information Criterion", xlab="log kappa", ylab="AIC")
-plot(log10(f$kappas), f$trs, type="l",xlab="log kappa", ylab="Dim",main="Effective dimension")
+plot(log10(f$kappas), f$trs, type="l",xlab="log kappa",
+ylab="Dim",main="Effective dimension")
+}
 }
 
 \keyword{}

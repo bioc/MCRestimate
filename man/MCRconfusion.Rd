@@ -38,10 +38,12 @@ MCRconfusion(x,
 
 \examples{
 library(MCRestimate)
-data(exSet)
-result1 <- MCRestimate(exSet,"sex",classification.fun="RF.wrap",cross.outer=2,cross.repeat=2)
-result2 <- MCRestimate(exSet,"sex",classification.fun="PAM.wrap",poss.parameters=list(threshold=c(0.5,1)),cross.inner=3,cross.outer=2,cross.repeat=2)
-MCRwrongsamples(list(result1,result2),subgroup="Male",col.names=c("Random Forest","PAM"))
+library(golubEsets)
+data(Golub_Train)
+exSet <- Golub_Train[1:500,]
+result1 <- MCRestimate(exSet,"ALL.AML",classification.fun="RF.wrap",cross.outer=3,cross.repeat=2)
+result2 <- MCRestimate(exSet,"ALL.AML",classification.fun="PAM.wrap",poss.parameters=list(threshold=c(0.5,1)),cross.inner=3,cross.outer=3,cross.repeat=2)
+MCRwrongsamples(list(result1,result2),subgroup="AML",col.names=c("Random Forest","PAM"))
 MCRconfusion(list(result1,result2),col.names=c("Random Forest","PAM"))
 }
 

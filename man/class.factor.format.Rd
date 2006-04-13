@@ -19,7 +19,8 @@
 \value{A factor of length nrow(pData(x))}
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}}
 \examples{library(MCRestimate)
-data(exSet)
-class.factor.format(exSet, "type")}
+ library(golubEsets)
+data(Golub_Train)
+class.factor.format(Golub_Train[,28:35], "FAB",reference="M1")}
 
 \keyword{}

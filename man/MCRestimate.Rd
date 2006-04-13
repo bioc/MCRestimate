@@ -83,8 +83,10 @@ will form the second class }
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}, contributions from Patrick Warnat \url{mailto:p.warnat@dkfz-heidelberg.de}}
 \examples{
 library(MCRestimate)
-data(exSet)
-result <- MCRestimate(exSet,"type",classification.fun="RF.wrap",cross.outer=4,cross.repeat=3)
+library(golubEsets)
+data(Golub_Test)
+G2 <- Golub_Test[1:500,]
+result <- MCRestimate(G2,"ALL.AML",classification.fun="RF.wrap",cross.outer=4,cross.repeat=3)
 result
 if (interactive()) {
   x11(width=9, height=4)}

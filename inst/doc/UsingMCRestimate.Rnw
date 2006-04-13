@@ -44,7 +44,7 @@ known ALL/AML data set from T.Golub~\cite{Golub.1999} availabel in the package \
 library(MCRestimate)
 library(randomForest)
 library(golubEsets)
-data(golubTrain)
+data(Golub_Train)
 class.colum <- "ALL.AML"
 @
 
@@ -116,7 +116,7 @@ cross.inner        <- 2
 Now we have specified all parameter and can run the function
 
 <<RF.make,eval=TRUE,results=hide>>=
-RF.estimate <- MCRestimate(golubTrain,
+RF.estimate <- MCRestimate(Golub_Train,
                         class.colum,
                         classification.fun="RF.wrap",
                         thePreprocessingMethods=Preprocessingfunctions,
@@ -155,7 +155,7 @@ data.  The function \Rfunction{ClassifierBuild} is used to build a classifier th
 used for new data.
 
 <<>>=
-RF.classifier <- ClassifierBuild (golubTrain, 
+RF.classifier <- ClassifierBuild (Golub_Train, 
                                  class.colum,
                                  classification.fun="RF.wrap",
 				 thePreprocessingMethods=Preprocessingfunctions,
@@ -175,8 +175,8 @@ want to classify the data from the \Rclass{exprSet}  \Robject{golubTest}, that i
 also part of the  package \Rpackage{golubEsets}.
 
 <<test>>=
-data(golubTest)
-RF.classifier$classifier.for.exprSet(golubTest)
+data(Golub_Test)
+RF.classifier$classifier.for.exprSet(Golub_Test)
 @
 This work was supported by NGFN (Nationales Genomforschungsnetz).
 
