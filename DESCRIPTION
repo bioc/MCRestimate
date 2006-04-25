@@ -1,6 +1,6 @@
 Package: MCRestimate
 Title: Misclassification error estimation with cross-validation
-Version: 1.5.3
+Version: 1.7.0
 Date: 13 April 2006
 Author: Markus Ruschhaupt, Ulrich Mansmann, Patrick Warnat, Wolfgang
         Huber, Axel Benner
