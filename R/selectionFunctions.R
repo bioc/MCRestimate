@@ -49,7 +49,7 @@ varSel.highest.t.stat.eSRG <- function(sample.gene.matrix,classfactor,theParamet
 
 varSel.highest.var <- function(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=2000,...)
  {if(is.null(theParameter))
- {gene.sd   <- apply (sample.gene.matrix,1,var)
+ {gene.sd   <- apply (sample.gene.matrix,1,var,na.rm=TRUE)
   selection <- order(gene.sd,decreasing=TRUE)[1:var.numbers]                   
   theParameter            <- rep(TRUE,nrow(sample.gene.matrix))
   theParameter[selection] <- FALSE
@@ -64,7 +64,7 @@ varSel.highest.var.eSRG <- function(sample.gene.matrix,classfactor,theParameter=
  {if(is.null(theParameter))
  {m                     <- nrow(sample.gene.matrix)/2
   new.matr              <- sample.gene.matrix[1:m,]-sample.gene.matrix[(m+1):(2*m),]
-  gene.sd               <- apply (new.matr,1,var)
+  gene.sd               <- apply (new.matr,1,var,na.rm=TRUE)
   selection             <- order(gene.sd,decreasing=TRUE)[1:var.numbers]                   
   bad.values            <- rep(TRUE,m)
   bad.values[selection] <- FALSE

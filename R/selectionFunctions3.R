@@ -25,7 +25,7 @@ varSel.removeManyNA <- function (sample.gene.matrix, classfactor, theParameter=N
 
 varSel.impute.NA <- function(sample.gene.matrix ,classfactor, theParameter=NULL,...) 
 { if (is.null(theParameter))
-   theParameter  <- apply(sample.gene.matrix, 1, median)
+   theParameter  <- apply(sample.gene.matrix, 1, median,na.rm=TRUE)
   cluster.gene.matrix <- replace.NA(sample.gene.matrix,theParameter,byRow=TRUE)  
   return(list(matrix=cluster.gene.matrix,parameter=theParameter))
 }
