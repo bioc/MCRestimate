@@ -92,7 +92,8 @@ MCRestimate.default <- function(eset,
 
 
  ###### the random generator is set
- set.seed(rand)
+ if(! is.null(rand))
+  set.seed(rand)
 
  #######creating the block of samples which should be in the test set
 
@@ -319,7 +320,8 @@ MCRestimate.exprSetRG<- function(eset,
 
 
  ###### the random generator is set
- set.seed(rand)
+ if(! is.null(rand))
+  set.seed(rand)
  
  #######creating the block of samples which should be in the test set
  

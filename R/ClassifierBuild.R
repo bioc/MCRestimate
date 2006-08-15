@@ -86,7 +86,8 @@ ClassifierBuild.default <- function(eset,
 
 
  ###### the random generator is set
- set.seed(rand)
+ if(! is.null(rand))
+  set.seed(rand)
 
 
  the.vector.of.all.parameters <- vector(length=0, mode="list")
@@ -243,8 +244,9 @@ ClassifierBuild.exprSetRG<- function(eset,
   predicted <- function(model,test) return(model(test))
 
 
- ###### the random generator is set 
- set.seed(rand)
+ ###### the random generator is set
+ if(! is.null(rand))
+  set.seed(rand)
 
 
 
