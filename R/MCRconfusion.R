@@ -2,7 +2,7 @@
 
 MCRconfusion <- function(x, col.names=names(x),row.names=NULL)
   { if (class(x) != "list") stop("The first argument must be a list.")
-    if (!(all(sapply(x,class)=="MCRestimate"))) stop("Each object in your given list must be a member of class 'MCRestimate'.")
+    if (!(all(sapply(x,function(y) class(y))=="MCRestimate"))) stop("Each object in your given list must be a member of class 'MCRestimate'.")
     if (!is.null(col.names) & length(x) != length(col.names)) stop("The length of your list and the length of col.names must be equal.")
     ref.class <- x[[1]]$classes
     if (!(all(sapply(x,function(y) all(y$classes==ref.class))))) stop("At least one class lable does not fit.")

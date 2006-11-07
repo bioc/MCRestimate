@@ -3,7 +3,7 @@
 MCRwrongsamples <- function (x, col.names=names(x),rownames.from.object=TRUE,subgroup=NULL,freq=FALSE)
   {
   if (class(x) != "list") stop("The first argument must be a list.")
-  if (!(all(sapply(x,class)=="MCRestimate"))) stop("Each object in your given list must be a member of class 'MCRestimate'.")
+  if (!(all(sapply(x,function(y) class(y))=="MCRestimate"))) stop("Each object in your given list must be a member of class 'MCRestimate'.")
   if (!is.null(col.names) & length(x) != length(col.names)) stop("The length of your list and the length of col.names must be equal.")
   correct.prediction <- sapply(x,function(x) x$correct.prediction)
   if (freq) wrong.pred.frq <- sapply(x,function(x) 1- x$correct.class.vote)
