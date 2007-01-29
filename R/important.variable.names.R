@@ -1,5 +1,5 @@
 important.variable.names <- function(mcr,file="important_variables",...){
-  gene.list <- sapply(mcr$information,function(x) x[,1])
+  gene.list <- lapply(mcr$information,function(x) x[,1])
   xx <- as.matrix(table (unlist(gene.list)))
   gene.names <- rownames(xx)
   the.length <- sapply(gene.list,length)
