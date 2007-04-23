@@ -1,10 +1,6 @@
-\name{varSel.highest.var.eSRG}
-\alias{varSel.highest.var.eSRG}
+\name{varSel.highest.var}
 \alias{varSel.highest.var}
-\alias{varSel.green.int.sec.eSRG}
-\alias{varSel.green.int.max.eSRG}
 \alias{varSel.highest.t.stat}
-\alias{varSel.highest.t.stat.eSRG}
 \alias{varSel.AUC}
 \alias{varSel.removeManyNA}
 \alias{varSel.impute.NA}
@@ -15,13 +11,8 @@
 
 \usage{identity(sample.gene.matrix,classfactor,...)
        varSel.highest.t.stat(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=500,...)
-       varSel.highest.t.stat.eSRG(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=500,...)
 
        varSel.highest.var(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=2000,...)
-       varSel.highest.var.eSRG(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=2000,...)
-
-       varSel.green.int.max.eSRG(sample.gene.matrix,classfactor,theParameter=NULL,lambda=0.5,...)
-       varSel.green.int.sec.eSRG(sample.gene.matrix,classfactor,theParameter=NULL, lambda=0.5,...)
 
        varSel.AUC(sample.gene.matrix, classfactor, theParameter=NULL,var.numbers=200,...)
        cluster.kmeans.mean(sample.gene.matrix,classfactor,theParameter=NULL,number.clusters=500,...)
@@ -45,7 +36,6 @@
   \item{number.clusters}{parameter which specifies the number of clusters}  
   \item{var.numbers}{some methods needs an argument which specifies
       how many variables should be taken}
-  \item{lambda}{additional parameter for some methods}
   \item{NAthreshold}{integer- if the percentage of the NA is higher than
     this threshold the variable will be deleted} 
   \item{\dots}{Further parameters}
@@ -56,9 +46,7 @@
   of each cluster. \code{varSel.highest.var} selects a number (specified
   by 'var.numbers') of variables  with the highest variance. \code{varSel.AUC} chooses the
   most discriminating variables due to the AUC criterium (the
-  library \code{ROC} is required). Some variable selection functions
-  only work with an \code{\link{MCRestimate.exprSetRG}}( name ends with \code{.eSRG}).and others only work
-  with \code{\link{MCRestimate.default}} (no \code{.eSRG}).}
+  library \code{ROC} is required).}
 
 
 

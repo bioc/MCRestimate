@@ -1,70 +1,39 @@
 \name{varSel.highest.var.eSRG}
 \alias{varSel.highest.var.eSRG}
-\alias{varSel.highest.var}
 \alias{varSel.green.int.sec.eSRG}
 \alias{varSel.green.int.max.eSRG}
-\alias{varSel.highest.t.stat}
 \alias{varSel.highest.t.stat.eSRG}
-\alias{varSel.AUC}
-\alias{varSel.removeManyNA}
-\alias{varSel.impute.NA}
-\alias{varSel.svm.rfe}
-\alias{identity}
-\alias{cluster.kmeans.mean}
-\title{Variable selection and cluster functions}
-\description{Different functions for a variable selection and clustering methods. These functions are mainly used for the function \code{\link{MCRestimate}}}  
+\title{Variable selection and cluster functions to work with MCRestimate.exprSetRG}
+\description{Different functions for a variable selection and clustering methods. These functions are used for the function \code{\link{MCRestimate.exprSetRG}}}  
 
-\usage{identity(sample.gene.matrix,classfactor,...)
-       varSel.highest.t.stat(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=500,...)
+\usage{
        varSel.highest.t.stat.eSRG(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=500,...)
 
-       varSel.highest.var(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=2000,...)
        varSel.highest.var.eSRG(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=2000,...)
 
        varSel.green.int.max.eSRG(sample.gene.matrix,classfactor,theParameter=NULL,lambda=0.5,...)
        varSel.green.int.sec.eSRG(sample.gene.matrix,classfactor,theParameter=NULL, lambda=0.5,...)
 
-       varSel.AUC(sample.gene.matrix, classfactor, theParameter=NULL,var.numbers=200,...)
-       cluster.kmeans.mean(sample.gene.matrix,classfactor,theParameter=NULL,number.clusters=500,...)
-
-       varSel.removeManyNA(sample.gene.matrix,classfactor, theParameter=NULL, NAthreshold=0.25,...)
-       varSel.impute.NA(sample.gene.matrix ,classfactor,theParameter=NULL,...)
-
-       varSel.svm.rfe(sample.gene.matrix, classfactor,theParameter=NULL, ...)
 }
 
 \arguments{
   \item{sample.gene.matrix}{a matrix in which the rows corresponds to
     genes and the colums corresponds to samples}
   \item{classfactor}{a factor containing the values that should be predicted}
-  \item{theParameter}{Parameter that depends on the function. For
-    'cluster.kmeans.mean' eighter NULL or an output of the function
-    \code{kmeans}. If it is NULL then \code{kmeans} will be used to
-    form clusters of the genes. Otherwise the already existing clusters
-    will be used. In both ways there will be a calculation of the
-    metagene intensities afterwards. For the other functions eighter
-    NULL or a logical vector which indicates for every gene if it sould
-    be left out from further analysis or not}
-  \item{number.clusters}{parameter which specifies the number of clusters}  
+  \item{theParameter}{Either NULL or a logical vector which indicates for every gene if it should
+    be left out from further analysis or not} 
   \item{var.numbers}{some methods needs an argument which specifies
       how many variables should be taken}
   \item{lambda}{additional parameter for some methods}
-  \item{NAthreshold}{integer- if the percentage of the NA is higher than
-    this threshold the variable will be deleted} 
   \item{\dots}{Further parameters}
 }
 
-\details{ \code{metagene.kmeans.mean} performes a kmeans clustering with
-  a number of clusters specified by 'number clusters' and takes the mean
-  of each cluster. \code{varSel.highest.var} selects a number (specified
-  by 'var.numbers') of variables  with the highest variance. \code{varSel.AUC} chooses the
-  most discriminating variables due to the AUC criterium (the
-  library \code{ROC} is required). Some variable selection functions
-  only work with an \code{\link{MCRestimate.exprSetRG}}( name ends with \code{.eSRG}).and others only work
-  with \code{\link{MCRestimate.default}} (no \code{.eSRG}).
-  \code{varSel.svm.rfe} makes feature selection by SVM RFE using a
-  linear kernel.The number of selected features is optimised by internal
-  CV literature: Guyon et al. (2002) Machine Learning 46, 389-422.} 
+\details{ \code{varSel.highest.var.eSRG} selects a number (specified
+  by 'var.numbers') of variables  with the highest variance.
+  \code{varSel.highest.t.stat.eSRG} selects variables with highest t
+  statistics.  \code{varSel.green.int.max.eSRG} and
+  \code{varSel.green.int.sec.eSRG} perform a selection based on the
+  green intensity channel. All functions  only work with \code{\link{MCRestimate.exprSetRG}}.} 
 
 
 
@@ -77,7 +46,7 @@
     performed or the output of the function kmeans for the clustering
     algorithm.}}
 
-\author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}, Patrick Warnat \url{mailto:p.warnat@dkfz-heidelberg.de}}
+\author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}}
 
 \seealso{\code{\link{MCRestimate}}}
 
