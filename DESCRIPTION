@@ -14,5 +14,5 @@ Depends: R (>= 1.9.1), e1071 (>= 1.5-12), pamr (>= 1.22),
         1.4.2),golubEsets (>= 1.2),
 Suggests: arrayMagic (>= 1.4.0), xtable (>= 1.2-1), ROC (>= 1.8.0), genefilter (>= 1.12.0), gpls (>= 1.6.0)
 biocViews: Statistics, Classification
-SaveImage: yes
+LazyLoad: yes
 
