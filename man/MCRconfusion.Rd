@@ -27,7 +27,6 @@ MCRconfusion(x,
   \item{row.names}{Vector of strings used for row names. If not specified the names of the groups are used}
 }
 
- }
 
 \value{ \code{MCRwrongsamples} returns a matrix and \code{MCRconfusion} returns a confusion matrix.}
 
