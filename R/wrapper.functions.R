@@ -126,7 +126,7 @@ SVM.wrap <- function(x,y,gamma=NULL,kernel="radial",...)
 
 
 GPLS.wrap <- function (x,y,...){
-  require(gpls)
+  library(gpls)
     level.y <- levels(y)
     if (length(level.y)!=2) stop("Up to now this methods only works with two groups")
     y <- as.integer(y) - 1 # because if a factor is converted into an integer it starts with 1

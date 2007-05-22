@@ -166,9 +166,8 @@ ClassifierBuild.exprSetRG<- function(eset,
                         cross.inner=10,
                         rand=123,
                         information=TRUE,
-                        thePreprocessingMethods=c(variableSel.fun,cluster.fun))
-
-{ require(arrayMagic)
+                        thePreprocessingMethods=c(variableSel.fun,cluster.fun)){
+  library(arrayMagic)
   if(!(length(classification.fun)==1 & is.function(get(classification.fun))))
     stop("'classification.fun' must be an existing classification function.")
   for (k in 1:length(thePreprocessingMethods))

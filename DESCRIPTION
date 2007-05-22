@@ -1,7 +1,7 @@
 Package: MCRestimate
 Title: Misclassification error estimation with cross-validation
-Version: 1.9.4
-Date: 23 April 2007
+Version: 1.9.5
+Date: 22 May 2007
 Author: Markus Ruschhaupt, Ulrich Mansmann, Patrick Warnat, Wolfgang
         Huber, Axel Benner
 Description: This package includes a function for combining
@@ -9,10 +9,8 @@ Description: This package includes a function for combining
         misclassification errors
 Maintainer: Markus Ruschhaupt <m.ruschhaupt@dkfz.de>
 License: GPL version 2 or newer
-Depends: R (>= 1.9.1), e1071 (>= 1.5-12), pamr (>= 1.22),
-        randomForest(>= 3.9-6), RColorBrewer (>= 0.1-3), Biobase (>=
-        1.4.2),golubEsets (>= 1.2),
-Suggests: arrayMagic (>= 1.4.0), xtable (>= 1.2-1), ROC (>= 1.8.0), genefilter (>= 1.12.0), gpls (>= 1.6.0)
+Depends: R (>= 1.9.1), e1071 (>= 1.5-12), pamr (>= 1.22), randomForest(>= 3.9-6), RColorBrewer (>= 0.1-3), Biobase (>= 1.4.2), golubEsets (>= 1.2), arrayMagic (>= 1.4.0), gpls (>= 1.6.0), ROC (>= 1.8.0)
+Suggests: xtable (>= 1.2-1), genefilter (>= 1.12.0)
 biocViews: Statistics, Classification
 LazyLoad: yes
 
