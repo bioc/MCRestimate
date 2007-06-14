@@ -22,8 +22,8 @@
 RF.wrap <- function (x,y,...)
   { require(randomForest)
     forest <- randomForest(x,y,importance=TRUE,...)
-    names <- forest$importance[(forest$importance[,2] != 0),]
-    names <- names[order(names[,2],decreasing=TRUE),]
+    names <- forest$importance[(forest$importance[,"MeanDecreaseAccuracy"] != 0),]
+    names <- names[order(names[,"MeanDecreaseAccuracy"],decreasing=TRUE),]
     names <- cbind(rownames(names),names)
     predict.function <- function(testmatrix) return(predict(forest,testmatrix))
 
