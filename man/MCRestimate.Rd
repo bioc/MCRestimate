@@ -77,7 +77,10 @@ will form the second class }
  Note: 'correct prediction' means that a sample was predicted to be
  a member of the correct class at least as often as it was predicted to
  be a member of each other class. So in the two class problem a sample
- is also 'correct' if it has been predicted correctly half of the time. 
+ is also 'correct' if it has been predicted correctly half of the time.
+
+ Note: Looking at the information slot PAM returns the genes used in the
+ analysis and RF return the genes with a positiv decrease of accuracy.
 }
 
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}, contributions from Patrick Warnat \url{mailto:p.warnat@dkfz-heidelberg.de}}
