@@ -19,9 +19,9 @@
 ###########################
 
 
-RF.wrap <- function (x,y,...)
+RF.wrap <- function (x,y,ntree=500,...)
   { require(randomForest)
-    forest <- randomForest(x,y,importance=TRUE,...)
+    forest <- randomForest(x,y,importance=TRUE,ntree=ntree,...)
     names <- forest$importance[(forest$importance[,"MeanDecreaseAccuracy"] > 0),]
     names <- names[order(names[,"MeanDecreaseAccuracy"],decreasing=TRUE),]
     names <- cbind(rownames(names),names)

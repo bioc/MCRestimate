@@ -12,7 +12,7 @@
 function \code{\link{MCRestimate}}}  
 
 \usage{
-RF.wrap(x,y,\dots)
+RF.wrap(x,y,ntree=500,\dots)
 PAM.wrap(x,y,threshold,\dots)
 PLR.wrap(x,y,kappa=0,eps=1e-4,...)
 SVM.wrap(x,y,gamma = NULL, kernel = "radial", ...)
@@ -26,6 +26,7 @@ GPLS.wrap(x,y,\dots)
    \item{threshold}{the threshold for PAM}
    \item{kappa}{the penalty parameter for the penalised logistic regression}
    \item{eps}{}
+   \item{ntree}{number of trees to grow in randomForest}
    \item{gamma}{parameter for support vector machines}
    \item{kernel}{parameter for support vector machines}
   \item{\dots}{Further parameters}
