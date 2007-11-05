@@ -41,6 +41,7 @@ known ALL/AML data set from T.Golub~\cite{Golub.1999} availabel in the package \
  the name of the phenodata column that should be used for the classification.
 
 <<arguments,results=hide>>=
+set.seed(123)
 library(MCRestimate)
 library(randomForest)
 library(golubEsets)
@@ -59,14 +60,14 @@ selection or aggregation is applied to the data set before the main
 classification porcedure is started. But these steps must also be part of the
 cross-validation. In our example we want to perform a variable selection and
 only take the genes with the highest variance across all samples. Because we don't know exactly how many
-genes we want to have, we give two possible values (250 and 1000). The described methods is
+genes we want to have, we give two possible values (10 and 25). The described methods is
 implemented in the functions \Rfunction{g.red.highest.var}. Further preprocessing functions are part of the
 package \Rpackage{MCRestimate} and also new functions can be implemented.
 
 
 <<METHOD CHOISE>>=
 Preprocessingfunctions        <- c("varSel.highest.var")
-list.of.poss.parameter        <- list(var.numbers=c(250,1000))
+list.of.poss.parameter        <- list(var.numbers=c(10,25))
 @
 To use \Rfunction{MCRestimate} with a classification procedure a wrapper for this
 method must be available. The package \Rpackage{MCRestimate} includes wrapper for the following classification
@@ -107,9 +108,9 @@ reasons here we choose very small values. Normally the values for  \Rfunarg{cros
 
 
 <<ARGUMENTS FOR CROSS-VALIDSATION>>=
-cross.outer        <- 2
-cross.repeat       <- 3
-cross.inner        <- 2
+cross.outer        <- 7
+cross.repeat       <- 2
+cross.inner        <- 8
 @
 
 

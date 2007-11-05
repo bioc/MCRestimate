@@ -6,7 +6,7 @@
 \description{A function which performs penalised logistic regression.}
 
 \usage{PLR(trainmatrix, resultvector, kappa=0, eps=1e-4)
-       predict.PLR(object,...)}
+       \method{predict}{PLR}(object,...)}
 \arguments{
   \item{resultvector}{a vector which contains the labeling of the samples}
   \item{trainmatrix}{a matrix which includes the data. The rows corresponds to the observations and the colums to the variables.}

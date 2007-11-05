@@ -24,7 +24,7 @@ function (x, y, gamma = NULL, kernel = "radial", ...)
     predict.function <- function(testmatrix) {
       p.m=matrix(0,nrow=dim(testmatrix)[1],ncol=nclasses)
       for (m in 1:nclasses)  {
-        p=attr(predict(model.list[[m]],testmatrix,decision.values=T), "decision.values")
+        p=attr(predict(model.list[[m]],testmatrix,decision.values=TRUE), "decision.values")
 	#elements of the class which appears first in y get positive decision values
 	#therefore, the decision values for the classifier which distinguishes elements 
 	#of the class which appears first in y versus all other elements has to be multipied by -1

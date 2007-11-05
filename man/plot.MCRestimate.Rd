@@ -8,7 +8,7 @@
   classification method predicts sample i as a member of class j.}
 
 \usage{
-plot.MCRestimate(x,
+\method{plot}{MCRestimate}(x,
                  class.factor=NULL,
                  rownames.from.object=FALSE,
                  sample.order=TRUE,
