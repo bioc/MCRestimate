@@ -102,15 +102,13 @@ is the name of the phenoData column the sample names are stored in.
 plot.label               <- "Samples"
 @
 
-{\bf The Cross-validation parameter (see man page for details):} For time
-reasons here we choose very small values. Normally the values for  \Rfunarg{cross.outer} and
- \Rfunarg{cross.inner} should be at least 5.
+{\bf The Cross-validation parameter (see man page for details):} The values for  \Rfunarg{cross.outer} and \Rfunarg{cross.inner} should be at least 5.
 
 
 <<ARGUMENTS FOR CROSS-VALIDSATION>>=
-cross.outer        <- 7
+cross.outer        <- 11
 cross.repeat       <- 2
-cross.inner        <- 8
+cross.inner        <- 9
 @
 
 
