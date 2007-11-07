@@ -108,9 +108,9 @@ reasons here we choose very small values. Normally the values for  \Rfunarg{cros
 
 
 <<ARGUMENTS FOR CROSS-VALIDSATION>>=
-cross.outer        <- 7
+cross.outer        <- 11
 cross.repeat       <- 2
-cross.inner        <- 8
+cross.inner        <- 9
 @
 
 

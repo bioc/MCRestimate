@@ -4,7 +4,7 @@
 \alias{ClassifierBuild.exprSetRG}
 \title{Building a classifier as a combination of preprocessing and
   classification method}
-\description{}
+\description{This function generates an classifier by combining classification method and preprocessing method}
 \usage{
 ClassifierBuild(eset,
                 class.column,
