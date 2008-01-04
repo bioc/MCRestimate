@@ -197,7 +197,7 @@ MCRestimate.default <- function(eset,
                                       
   normed.table         <- new.table/rowSums(new.table)
   confusion            <- cbind(new.table, 1-diag(normed.table))
-  colnames(confusion)  <- c(levels(class.column.factor), "class error")
+  colnames(confusion)  <- c(colnames(new.table),"class error")
  
 
 
@@ -425,7 +425,8 @@ MCRestimate.exprSetRG<- function(eset,
                                       
   normed.table         <- new.table/rowSums(new.table)
   confusion            <- cbind(new.table, 1-diag(normed.table))
-  colnames(confusion)  <- c(levels(class.column.factor), "class error")
+  colnames(confusion)  <  c(colnames(new.table),"class error")
+
  
 
 
