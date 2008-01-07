@@ -22,10 +22,11 @@ MCRestimate(eset,
             rand=123,
             stratify=FALSE,
             information=TRUE,
+            block.column=NULL,
             thePreprocessingMethods=c(variableSel.fun,cluster.fun))}
 \arguments{
   \item{eset}{an object of class \code{exprSet} or class \code{\link[arrayMagic]{exprSetRG-class}}}
-  \item{class.column}{a number or a character string which indicated the column of the
+  \item{class.column}{a number or a character string which indicates the column of the
 expression set's phenodata containing the class label}
   \item{reference.class}{a character string - the name of one class - if
 specified, the class will form the first class and all the other classes
@@ -34,7 +35,8 @@ will form the second class }
  \item{variableSel.fun}{character string which names the function that should be used for the variable selection}
  \item{cluster.fun}{character string which names the function that
    should be used for the clustering of variables}
- \item{thePreprocessingMethods}{vector of character with the names of all preprocessing functions- can be used instead of 'variableSel.fun' and 'cluster.fun' - see details}
+ \item{thePreprocessingMethods}{vector of character with the names of
+   all preprocessing functions - can be used instead of 'variableSel.fun' and 'cluster.fun' - see details}
  \item{poss.parameters}{a list of possible values for the parameter of the classification, variable selection, and cluster methods}
  \item{cross.outer}{integer  - the number of nearly equal sized parts the sample set should be divided into (outer cross-validation)}
  \item{cross.repeat}{integer - the number of repetitions of the cross-validation procedure}
@@ -42,6 +44,10 @@ will form the second class }
   \item{plot.label}{name of one column of the phenodata- if specified, the content of this column will form the labels of the x-axis if the 'votematrix' will be plotted with plot.MCRestimate}
   \item{rand}{integer - the random number generator will be put in a reproducible state}
   \item{stratify}{should a stratified version be used for the cross validation?}
+  \item{block.column}{a character string which indicates the column of the
+expression set's phenodata containing the blocking covariate, which sets 
+a constrain on the cross-validation splits: each block is either
+completely assigned to the test or to the training set}
   \item{information}{information - should classificator specific data be given(depends on the wrapper for the classification method)}
 }
 
@@ -77,13 +83,10 @@ will form the second class }
  Note: 'correct prediction' means that a sample was predicted to be
  a member of the correct class at least as often as it was predicted to
  be a member of each other class. So in the two class problem a sample
- is also 'correct' if it has been predicted correctly half of the time.
-
- Note: Looking at the information slot PAM returns the genes used in the
- analysis and RF return the genes with a positiv decrease of accuracy.
+ is also 'correct' if it has been predicted correctly half of the time. 
 }
 
-\author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}, contributions from Patrick Warnat \url{mailto:p.warnat@dkfz-heidelberg.de}}
+\author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}, contributions from Andreas Buness and Patrick Warnat}
 \examples{
 library(MCRestimate)
 library(golubEsets)

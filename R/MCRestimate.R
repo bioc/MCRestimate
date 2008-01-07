@@ -1,3 +1,4 @@
+
 MCRestimate <- function(eset,
                         class.column,
                         reference.class=NULL,
@@ -12,6 +13,7 @@ MCRestimate <- function(eset,
                         rand=123,
                         stratify=FALSE,
                         information=TRUE,
+                        block.column=NULL,
                         thePreprocessingMethods=c(variableSel.fun,cluster.fun)) UseMethod("MCRestimate")
 
 MCRestimate.default <- function(eset,
@@ -28,6 +30,7 @@ MCRestimate.default <- function(eset,
                         rand=123,
                         stratify=FALSE,
                         information=TRUE,
+                        block.column=NULL,
                         thePreprocessingMethods=c(variableSel.fun,cluster.fun))
 
 { if(!(length(classification.fun)==1 & is.function(get(classification.fun))))
@@ -90,7 +93,17 @@ MCRestimate.default <- function(eset,
 
   predicted <- function(model,test) return(model(test))
 
+  my.balanced.folds <- function(class.column.factor, cross.outer){
+    sampleOfFolds  <- get("balanced.folds",en=asNamespace("pamr"))(class.column.factor, nfolds=cross.outer)
+    permutated.cut <- rep(0,length(class.column.factor))
+    for (sample in 1:cross.outer){
+      permutated.cut[sampleOfFolds[[sample]]] <- sample
+    }
+    return(permutated.cut)
+  }
 
+
+  
  ###### the random generator is set
  if(! is.null(rand))
   set.seed(rand)
@@ -103,7 +116,8 @@ MCRestimate.default <- function(eset,
 
  the.cut <- cut(1:nn,cross.outer,1:cross.outer)
 
- votal.matrix                 <- matrix(0,ncol=nlevels.class, nrow=nn)
+ ROWNAMES                     <- class.column.factor
+ COLNAMES                     <- levels.class
  the.vector.of.all.parameters <- vector(length=0, mode="list")
 
  eset.matrix                  <- exprs(eset)  # row=genes, col=samples
@@ -111,17 +125,62 @@ MCRestimate.default <- function(eset,
   #assign("model.information",list(),envir=we)
   Model.information.List <- list() # a list that will contain additional model information like the genes that are used for the model
 
+  if( ! is.null(block.column) ){
+    if (!block.column %in% names(pData(eset))){
+      stop("The value of 'block.column' should be the name of a column of pData(eset).")
+    }
+    block.factor <- as.factor(pData(eset)[,block.column])
+    the.blocks <-  as.integer(block.factor)
+    if( ! all(tapply(as.vector(class.column.factor),the.blocks, function(x) length(unique(x))))==1){
+      stop(" inconsistent class assignment for the different blocks in block.column ")
+    }
+    class.column.factor.blocks <- class.column.factor[!duplicated(the.blocks)]
+    nb <- length(unique(the.blocks))
+    if( cross.outer > nb ){
+      warning(paste("cross.outer: You have to specify not more than",nb," i.e. the number of different blocks in block.column; cross.outer is set to this number"))
+      cross.outer <- nb
+    }
+    if( cross.outer == nb ){
+      if( cross.repeat != 1 ){
+        cross.repeat <- 1
+        warning("cross.outer equals the number of blocks in block.column and hence cross.repeat is set to 1")     }
+    }
+    the.block.cut <-  cut(1:nb,cross.outer,1:cross.outer)
+  }else{
+    block.factor <- NULL
+  }
+
+  ## votal.matrix                <- matrix(0, ncol=nlevels.class, nrow=nn)
+  AllVotes                     <- array (NA, dim=c(nn,nlevels.class, cross.repeat))
+  permutated.cut.matrix        <- array (NA, dim=c(nn, cross.repeat))
 
 
-  for (l in 1:cross.repeat)
-  { the.votes.per.cv             <- matrix(NA, ncol=nlevels.class,nrow=nn)
+
+  for (l in 1:cross.repeat){
+    the.votes.per.cv             <- matrix(0, ncol=nlevels.class,nrow=nn)
     rownames(the.votes.per.cv)   <- class.column.factor
     colnames(the.votes.per.cv)   <- levels.class
-    if (stratify)
-      sampleOfFolds  <- get("balanced.folds",en=asNamespace("pamr"))(class.column.factor, nfolds=cross.outer)
-    else
-      permutated.cut <- sample(the.cut,nn)
-    
+    if( ! is.null(block.column) ){
+
+      if( stratify ){
+        permutated.block.cut <- my.balanced.folds(class.column.factor.blocks, cross.outer)
+      }else{
+        permutated.block.cut <- sample(the.block.cut,nb)
+      }
+      permutated.cut <- rep(NA, nn)
+      for (sample in 1:cross.outer){
+        blockSel <- which(permutated.block.cut == sample)
+        blocks <- the.blocks[!duplicated(the.blocks)][blockSel]
+        permutated.cut[the.blocks %in% blocks] <- sample
+      }      
+    }else{
+      if (stratify){
+        permutated.cut <- my.balanced.folds(class.column.factor, cross.outer)
+      }else{
+        permutated.cut <- sample(the.cut,nn)
+      }
+    }
+        
   ## the start of the outer cross-validation ##
   #############################################
 
@@ -129,12 +188,8 @@ MCRestimate.default <- function(eset,
      {
 
    # dividing the set into a testset and a trainingsset.
-    if (stratify){
-      block <- rep(FALSE,nn)
-      block[sampleOfFolds[[sample]]] <- TRUE
-    }else{
      block <- permutated.cut==sample
-    }
+         
      train.matrix <- t(eset.matrix[,!block,drop=FALSE]) #row=samples,col=genes
      test.matrix  <- t(eset.matrix[,block,drop=FALSE])
      train.factor <- class.column.factor[!block]
@@ -171,11 +226,15 @@ MCRestimate.default <- function(eset,
      colnames(vote.matrix)    <- levels.class
      the.votes.per.cv[block,] <- vote.matrix
    }
-  votal.matrix <- votal.matrix + the.votes.per.cv
+  permutated.cut.matrix[,l] <- permutated.cut
+  AllVotes[,,l] <- the.votes.per.cv
+  #votal.matrix <- votal.matrix + the.votes.per.cv
   }
-
-  votal.matrix <- votal.matrix /cross.repeat
-
+  votal.matrix <- apply(AllVotes,c(1,2),sum)
+  rownames(votal.matrix) <- ROWNAMES
+  colnames(votal.matrix) <- COLNAMES
+  votal.matrix           <- votal.matrix /cross.repeat
+  
   # transforming the vector of parameters
   
   if (length(the.vector.of.all.parameters)!=0)
@@ -185,8 +244,6 @@ MCRestimate.default <- function(eset,
   # creating  the confusion table
 
   res <- whatiscorrect(votal.matrix)
-  
-  
   vote.table           <- table(rownames(votal.matrix), res$best.vote)
   new.table            <- matrix(0,
                                  ncol=nrow(vote.table),
@@ -201,7 +258,7 @@ MCRestimate.default <- function(eset,
  
 
 
-## if plot.label is specified the vote matrix get new rownames
+## if plot.label is specified the sample.names are set
   
   if (!(is.null(plot.label)))
     if (length(plot.label)==1 ) sample.names <- pData(eset)[,plot.label]
@@ -223,7 +280,12 @@ MCRestimate.default <- function(eset,
                                 cross.inner=cross.inner,
                                 cross.repeat=cross.repeat,
                                 sample.names=sample.names,
-                                information=Model.information.List)
+                                information=Model.information.List,
+                                stratify=stratify,
+                                block.column=block.column,
+                                block.factor=block.factor,
+                                permutated.cut.matrix=permutated.cut.matrix,
+                                indVotes=AllVotes)
                            
    
   class(rv) <- "MCRestimate"
@@ -249,6 +311,7 @@ MCRestimate.exprSetRG<- function(eset,
                         rand=123,
                         stratify=FALSE,
                         information=TRUE,
+                        block.column=NULL,
                         thePreprocessingMethods=c(variableSel.fun,cluster.fun))
 
 { require(arrayMagic)
@@ -318,6 +381,15 @@ MCRestimate.exprSetRG<- function(eset,
 
   predicted <- function(model,test) return(model(test))
 
+  my.balanced.folds <- function(class.column.factor, cross.outer){
+    sampleOfFolds  <- get("balanced.folds",en=asNamespace("pamr"))(class.column.factor, nfolds=cross.outer)
+    permutated.cut <- rep(0,length(class.column.factor))
+    for (sample in 1:cross.outer){
+      permutated.cut[sampleOfFolds[[sample]]] <- sample
+    }
+    return(permutated.cut)
+  }
+
 
  ###### the random generator is set
  if(! is.null(rand))
@@ -331,14 +403,43 @@ MCRestimate.exprSetRG<- function(eset,
 
  the.cut <- cut(1:nn,cross.outer,1:cross.outer)
 
- votal.matrix                 <- matrix(0,ncol=nlevels.class, nrow=nn)
+ ROWNAMES                     <- class.column.factor
+ COLNAMES                     <- levels.class
  the.vector.of.all.parameters <- vector(length=0, mode="list")
 
  eset.matrix              <- rbind(exprs(getExprSetGreen(eset)),exprs(getExprSetRed(eset)))  # row=genes, col=samples genes are two times
 
  #assign("model.information",list(),envir=we) 
  Model.information.List <- list() # a list that will contain additional model information like the genes that are used for the model
+  
+  if( ! is.null(block.column) ){
+    if (!block.column %in% names(pData(eset))){
+      stop("The value of 'block.column' should be the name of a column of pData(eset).")
+    }
+    block.factor <- as.factor(pData(eset)[,block.column])
+    the.blocks <-  as.integer(block.factor)
+    if( ! all(tapply(as.vector(class.column.factor),the.blocks, function(x) length(unique(x))))==1){
+      stop(" inconsistent class assignment for the different blocks in block.column ")
+    }
+    class.column.factor.blocks <- class.column.factor[!duplicated(the.blocks)]
+    nb <- length(unique(the.blocks))
+    if( cross.outer > nb ){
+      warning(paste("cross.outer: You have to specify not more than",nb," i.e. the number of different blocks in block.column; cross.outer is set to this number"))
+      cross.outer <- nb
+    }
+    if( cross.outer == nb ){
+      if( cross.repeat != 1 ){
+        cross.repeat <- 1
+        warning("cross.outer equals the number of blocks in block.column and hence cross.repeat is set to 1")     }
+    }
+    the.block.cut <-  cut(1:nb,cross.outer,1:cross.outer)
+  }else{
+    block.factor <- NULL
+  }
 
+  ## votal.matrix                <- matrix(0, ncol=nlevels.class, nrow=nn)
+  AllVotes                     <- array (NA, dim=c(nn,nlevels.class, cross.repeat))
+  permutated.cut.matrix        <- array (NA, dim=c(nn, cross.repeat))
 
 
   
@@ -346,11 +447,27 @@ MCRestimate.exprSetRG<- function(eset,
   { the.votes.per.cv             <- matrix(NA, ncol=nlevels.class,nrow=nn)
     rownames(the.votes.per.cv)   <- class.column.factor
     colnames(the.votes.per.cv)   <- levels.class
-    if (stratify)
-      sampleOfFolds  <- get("balanced.folds",en=asNamespace("pamr"))(class.column.factor, nfolds=cross.outer)
-    else
-      permutated.cut <- sample(the.cut,nn)
-    
+    if( ! is.null(block.column) ){
+
+      if( stratify ){
+        permutated.block.cut <- my.balanced.folds(class.column.factor.blocks, cross.outer)
+      }else{
+        permutated.block.cut <- sample(the.block.cut,nb)
+      }
+      permutated.cut <- rep(NA, nn)
+      for (sample in 1:cross.outer){
+        blockSel <- which(permutated.block.cut == sample)
+        blocks <- the.blocks[!duplicated(the.blocks)][blockSel]
+        permutated.cut[the.blocks %in% blocks] <- sample
+      }      
+    }else{
+      if (stratify){
+        permutated.cut <- my.balanced.folds(class.column.factor, cross.outer)
+      }else{
+        permutated.cut <- sample(the.cut,nn)
+      }
+    }
+      
   ## the start of the outer cross-validation ##
   #############################################
     
@@ -358,12 +475,8 @@ MCRestimate.exprSetRG<- function(eset,
      {
 
    # dividing the set into a testset and a trainingsset.
-     if (stratify){
-      block <- rep(FALSE,nn)
-      block[sampleOfFolds[[sample]]] <- TRUE
-    }else{
      block <- permutated.cut==sample
-    }
+
      train.matrix <- t(eset.matrix[,!block,drop=FALSE]) #row=samples,col=genes
      test.matrix  <- t(eset.matrix[,block,drop=FALSE])
      train.factor <- class.column.factor[!block]
@@ -398,9 +511,13 @@ MCRestimate.exprSetRG<- function(eset,
      the.votes.per.cv[block,] <- vote.matrix
 
    }
-  votal.matrix <- votal.matrix + the.votes.per.cv
+  permutated.cut.matrix[,l] <- permutated.cut
+  AllVotes[,,l] <- the.votes.per.cv
+  #votal.matrix <- votal.matrix + the.votes.per.cv
   }
-
+  votal.matrix <- apply(AllVotes,c(1,2),sum)
+  rownames(votal.matrix) <- ROWNAMES
+  colnames(votal.matrix) <- COLNAMES
   votal.matrix <- votal.matrix /cross.repeat
 
   # transforming the vector of parameters
@@ -425,12 +542,11 @@ MCRestimate.exprSetRG<- function(eset,
                                       
   normed.table         <- new.table/rowSums(new.table)
   confusion            <- cbind(new.table, 1-diag(normed.table))
-  colnames(confusion)  <  c(colnames(new.table),"class error")
-
+  colnames(confusion)  <-  c(colnames(new.table),"class error")
  
 
 
-## if plot.label is specified the vote matrix get new rownames
+## if plot.label is specified 
   
   if (!(is.null(plot.label)))
     if (length(plot.label)==1 ) sample.names <- pData(GreenMinusRedSet)[,plot.label]
@@ -452,7 +568,12 @@ MCRestimate.exprSetRG<- function(eset,
                                 cross.inner=cross.inner,
                                 cross.repeat=cross.repeat,
                                 sample.names=sample.names,
-                                information=Model.information.List)
+                                information=Model.information.List,
+                                stratify=stratify,
+                                block.column=block.column,
+                                block.factor=block.factor,
+                                permutated.cut.matrix=permutated.cut.matrix,
+                                indVotes=AllVotes)
                            
    
   class(rv) <- "MCRestimate"

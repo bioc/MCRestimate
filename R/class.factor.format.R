@@ -22,9 +22,15 @@ class.factor.format <-  function(x, class.column, reference.class=NULL)
    class.vector <- pData(x)[,class.column]
 
    if (! (is.null(reference.class))) {       
-     if (!reference.class %in% class.vector)
-       stop(paste("The value of 'reference.class' should be contained in the values of column", class.column, "of pData(x)."))
-     class.vector <- ifelse(class.vector==reference.class, reference.class, "Alternativ")
+     if (! all(reference.class %in% class.vector) ) 
+       stop(paste("The values of 'reference.class' should be contained in the values of column", class.column, "of pData(x)."))
+     if( length(reference.class) == 1 ){
+       reference <- as.character(reference.class)
+     }else{
+       reference <- "Reference"
+     }
+     class.vector <- ifelse(class.vector %in% reference.class, 
+                            reference, "Alternativ")
    }
    return(as.factor(class.vector))
  }

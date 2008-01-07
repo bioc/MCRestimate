@@ -7,6 +7,12 @@ print.MCRestimate <- function(x,...)
    nP <- length(thePres)
    cat("\n")
    cat("Result of MCRestimate with", one.or.many,type.of.cv,"cross-validation",fill=TRUE)
+   if( "block.column" %in% names(x) ){
+     if( !is.null(x$block.column) ) cat(" on blocks defined by covariate :",x$block.column,":")
+   }
+   if( "stratify" %in% names(x) ){
+     if( x$stratify ) cat(" using balanced folds (stratify==TRUE) ")
+   }
    cat("\n")
    if(nP>0){
      for (i in 1:nP) cat(paste("Preprocessing function",i,":",thePres[i]),"\n")

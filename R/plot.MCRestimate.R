@@ -45,11 +45,17 @@ else if(is.matrix(x))
   
   stopifnot(is.logical(sample.order), is.logical(rownames.from.object), is.logical(legend))
   
-  if (sample.order)
-    {order.index           <- order(class.factor)
-     vote.matrix           <- vote.matrix[order.index,]
-     vote.annotation.frame <- vote.annotation.frame[order.index,]
-   }
+  if (sample.order)    
+    {
+      order.index           <- order(class.factor)
+      if( "block.factor" %in% names(x) ){
+        if( !is.null(x$block.factor) ){
+          order.index           <- order(class.factor,x$block.factor)
+        }
+      }
+      vote.matrix           <- vote.matrix[order.index,]
+      vote.annotation.frame <- vote.annotation.frame[order.index,]
+    }
   else
     order.index <- 1:nn
   
@@ -100,8 +106,20 @@ else if(is.matrix(x))
        dens <- shading * (as.numeric(vote.annotation.frame$class.factor[i]))}
      rect(i-0.5,-0.5,i+0.5,-0.015, density=dens,col=color,border=color)
      abline(v=i,lty=2,col="grey")
-   }
-  
+
+     ## lines to separate the blocks 
+     #if( i > 1 ){
+     #  if( "block.factor" %in% names(x) ){
+     #    if( !is.null(x$block.factor) ){
+     ##      if( x$block.factor[order.index][i-1] !=  x$block.factor[order.index][i] ){
+     #        abline(v=i-0.5, col="grey")
+     ##      }
+     #    }
+     #  }
+     #}
+   }  
+
+
   ## the legend is plotted (if there should be one) 
   if(legend)
     {

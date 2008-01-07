@@ -19,9 +19,9 @@
 ###########################
 
 
-RF.wrap <- function (x,y,ntree=500,...)
+RF.wrap <- function (x,y,...)
   { require(randomForest)
-    forest <- randomForest(x,y,importance=TRUE,ntree=ntree,...)
+    forest <- randomForest(x,y,importance=TRUE,...)
     names <- forest$importance[(forest$importance[,"MeanDecreaseAccuracy"] > 0),,drop=FALSE]
     names <- names[order(names[,"MeanDecreaseAccuracy"],decreasing=TRUE),]
     names <- cbind(rownames(names),names)
@@ -39,8 +39,13 @@ RF.wrap <- function (x,y,ntree=500,...)
 
 PLR.wrap <- function(x,y,kappa=0,eps=1e-4,...)
   { model <- PLR(x,y,kappa,eps)
-    predict.function <- function(testmatrix) return(predict(model,testmatrix))
-   
+    predict.function <- function(testmatrix){
+      # this is necessary to get a fector with the correct number of levels
+      A <- as.vector(predict(model,testmatrix))
+      theFaktors <- unlist(model$factorlevel)
+      K <- as.factor(c(A,theFaktors))[1:length(A)]
+      return(K)
+    }
    return(list(predict=predict.function,info=list()))
  }
 
@@ -126,7 +131,7 @@ SVM.wrap <- function(x,y,gamma=NULL,kernel="radial",...)
 
 
 GPLS.wrap <- function (x,y,...){
-  library(gpls)
+  require(gpls)
     level.y <- levels(y)
     if (length(level.y)!=2) stop("Up to now this methods only works with two groups")
     y <- as.integer(y) - 1 # because if a factor is converted into an integer it starts with 1

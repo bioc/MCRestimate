@@ -7,8 +7,8 @@
   \item{x}{an \code{exprSet}}
   \item{class.column}{either a number or a  character string specifying
     the relevant column of the phenoData slot in \code{x}}
-  \item{reference.class}{character. If specified the result will be
-   is a factor with only 2 levels: the reference class versus all other}
+  \item{reference.class}{character vector. If specified the result will be
+    a factor with only 2 levels: the reference class(es) versus all other}
 }
 \description{This function creates a factor whose levels represent the
   different classes for a classification problem. It is derived from the
