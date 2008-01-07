@@ -2,7 +2,7 @@ MCRindError <- function(MCRe,perGroup=FALSE){
   if(class(MCRe)!="MCRestimate")
     stop("You have to specify an object of class MCRestimate")
   if(!("indVotes" %in% names(MCRe)))
-    stop("Your object does not contain the individual MCR errors. Object was created with a MCRestimate version < 2.0")
+    stop("Your object does not contain the individual MCR errors. Object was created with an old version of MCRestimate")
   M <- MCRe$"indVotes"
   
   if(perGroup){
