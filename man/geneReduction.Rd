@@ -5,11 +5,13 @@
 \alias{varSel.removeManyNA}
 \alias{varSel.impute.NA}
 \alias{identity}
+\alias{varSel.identity}
 \alias{cluster.kmeans.mean}
 \title{Variable selection and cluster functions}
 \description{Different functions for a variable selection and clustering methods. These functions are mainly used for the function \code{\link{MCRestimate}}}  
 
 \usage{identity(sample.gene.matrix,classfactor,...)
+       varSel.identity(sample.gene.matrix,classfactor,...)
        varSel.highest.t.stat(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=500,...)
 
        varSel.highest.var(sample.gene.matrix,classfactor,theParameter=NULL,var.numbers=2000,...)
