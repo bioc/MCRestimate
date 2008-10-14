@@ -2,30 +2,10 @@ library(MCRestimate)
 library(randomForest)
 library(pamr)
 library(e1071)
-
-MyLoad <- function(x){
- A <- get(load(x))
- return(A)
-}
-
-
-the.expression.set <- MyLoad(DataSet)
-
+the.expression.set <- get(load(DataSet))
 
 if(RF){
-if (is.null(mtry.range)){
-  if(is.null(ntree.range)){
-    list.of.parameter <- c(parameter.for.preprocessing)
-  }else{
-    list.of.parameter <- c(list(ntree=ntree.range),parameter.for.preprocessing)
-  }
-}else{
- if(is.null(ntree.range)){
-    list.of.parameter <- c(list(mtry=mtry.range),parameter.for.preprocessing)
-  }else{
-    list.of.parameter <- c(list(mtry=mtry.range,ntree=ntree.range),parameter.for.preprocessing)
-  }
-}
+list.of.parameter <- c(list(mtry=mtry.range,ntree=ntree.range),parameter.for.preprocessing)
  r.forest <- MCRestimate(the.expression.set,
                          class.colum,
                          classification.fun="RF.wrap",
@@ -36,8 +16,6 @@ if (is.null(mtry.range)){
                          cross.repeat=cross.repeat,
                          reference.class=ref.class,
                          plot.label=plot.label,
-                         block.column=block.column,
-			 stratify=Strat,
 			 rand=SEED)
  save(r.forest, file=paste("backRF",SEED,".RData",sep=""))
     }
@@ -54,8 +32,6 @@ if(GPLS)
                           cross.inner=cross.inner,
                           reference.class=ref.class,
                           plot.label=plot.label,
-                          block.column=block.column,
-			  stratify=Strat,
 			 rand=SEED)
     save(r.gpls, file=paste("backGPLS",seed,".RData",sep=""))
   }
@@ -75,8 +51,6 @@ r.pam <- MCRestimate(the.expression.set,
                      cross.inner=cross.inner,
                      reference.class=ref.class,
                      plot.label=plot.label,
-                     block.column=block.column,
-		     stratify=Strat,
                      rand=SEED)
 save(r.pam,file=paste("backPAM",SEED,".RData",sep=""))
 }
@@ -94,8 +68,6 @@ r.logReg <- MCRestimate(the.expression.set,
                           cross.inner=cross.inner,
                           reference.class=ref.class,
                           plot.label=plot.label,
-                        block.column=block.column,
-			stratify=Strat,
 			 rand=SEED)
 save(r.logReg,file=paste("backlogReg",SEED,".RData",sep=""))
 }
@@ -112,8 +84,6 @@ if(SVM){
                       cross.inner=cross.inner,
                       reference.class=ref.class,
                       plot.label=plot.label,
-                      block.column=block.column,
-		      stratify=Strat,
 			 rand=SEED)
  save(r.svm, file=paste("backSVM",SEED,".RData",sep=""))
 }

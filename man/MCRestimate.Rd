@@ -12,8 +12,8 @@ MCRestimate(eset,
             class.column,
             reference.class=NULL,
             classification.fun,
-            variableSel.fun="varSel.identity",
-            cluster.fun="varSel.identity",
+            variableSel.fun="identity",
+            cluster.fun="identity",
             poss.parameters=list(),
             cross.outer=10,
             cross.repeat=3,
@@ -25,7 +25,7 @@ MCRestimate(eset,
             block.column=NULL,
             thePreprocessingMethods=c(variableSel.fun,cluster.fun))}
 \arguments{
-  \item{eset}{an object of class \code{exprSet} or class \code{\link[arrayMagic]{exprSetRG-class}}}
+  \item{eset}{an object of class \code{exprSet}}
   \item{class.column}{a number or a character string which indicates the column of the
 expression set's phenodata containing the class label}
   \item{reference.class}{a character string - the name of one class - if

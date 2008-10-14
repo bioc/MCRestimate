@@ -81,8 +81,8 @@ classes in the phenodata).
 #
 ## MAIN ARGUMENST ###
 #
-DataSet            <- "DataSet.RData" # the Expression Set
-class.colum        <- "Gesund" # the name of classification column
+DataSet            <- "eset.RData"  # the Expression Set
+class.colum        <- "sex"  # the name of classification column
 ref.class          <- NULL
 @
 
@@ -91,12 +91,12 @@ The gene selection and metagene function and parameters for these functions
 (that should be optimized) are give.
 
 <<>>=
-thePreprocessingfunktionsRF        <- c("identity")
-thePreprocessingfunktionsPAM       <- c("identity")
+thePreprocessingfunktionsRF        <- c("varSel.highest.var")
+thePreprocessingfunktionsPAM       <- c("varSel.highest.var")
 thePreprocessingfunktionsPLR       <- c("varSel.highest.var")
 thePreprocessingfunktionsSVM       <- c("varSel.highest.var")
 thePreprocessingfunktionsGPLS      <- c("varSel.highest.var")
-parameter.for.preprocessing        <- "list()"
+parameter.for.preprocessing        <- "list(var.numbers=c(1000))"
 @
 
 {\bf Parameter for the plot of the results (see man page for details):} Here
@@ -105,8 +105,8 @@ we don't want to have any specific labels in the resulting plot.
 #
 ## PLOT PARAMETER ###
 #
-plot.label               <- "Sample"
-rownames.from.object     <- TRUE
+plot.label               <- NULL
+rownames.from.object     <- FALSE
 @
 
 {\bf The Cross-validation parameter (see man page for details):} For time
@@ -116,9 +116,9 @@ reasons here we choose very small values. Normally the values for {\it cross.out
 #
 ## ARGUMENTS FOR CROSS-VALIDSATION ###
 #
-cross.outer        <- 10
-cross.repeat       <- 20
-cross.inner        <- 5
+cross.outer        <- 4
+cross.repeat       <- 6
+cross.inner        <- 3
 @
 
 {\bf Parameters for the different classification methods (that should be
@@ -127,43 +127,27 @@ only specify the number of thresholds that should be used. In a later part of th
 vignette (code not shown) appropriate thresholds are choosen. 
 
 
-Stratify the blocks of the cross-validation?
-
-<<>>=
-Strat <- TRUE
-@
-
 
 <<>>=
 #
 ## PARAMETER FOR DIFFERENT CLASSIFICATION METHODS ###
 #
-number.thresholds  <- 6
+number.thresholds  <- 20
 kappa.range        <- "10^seq(0,5,0.2)"
 gamma.range        <- "2^(seq(-10,4,2))"
 cost.range         <- "2^(seq(-4,10,2))"
-mtry.range         <- "c(1,5,10)"  # "c(1,6,25)"
+mtry.range         <- "c(1,6,25)"
 ntree.range        <- "c(2000)"
 @
 
-{\bf block.column} a character string which indicates the column of the expression set's phenodata containing the blocking covariate, which sets  a constrain on the cross-validation splits: each block is either completely assigned to the test or to the training set
 
-<<block>>=
-block.column <- NULL
-@
 
 
 
 <<choosingTh , echo=FALSE,results=hide>>=
-## Muss ich so machen damit in dem Hauptverzeichniss nichts ueberschrieben wird, geht bestimmt einfacher
-MyLoad <- function(x){
- A <- get(load(x))
- return(A)
-}
 thresholds = c(0)
 if(PAMAll){
-the.expression.set <-MyLoad(DataSet)
-
+the.expression.set <- get(load(DataSet))
 if (class(the.expression.set)=="exprSetRG")
   {       eeset <- getExprSetLogRatio (the.expression.set)
    resultfactor <- class.factor.format(eeset,class.colum,ref.class)
@@ -191,7 +175,7 @@ if(PAMAll)
 Now the whole process will be split into subprocesses. 
 
 <<P>>=
-numberOfProcesses     <- cross.repeat # now one job per repetition
+numberOfProcesses     <- 3
 RepetitionsPerProcess <- ceiling(cross.repeat/numberOfProcesses)
 @
 
@@ -219,14 +203,6 @@ if (!is.null(ref.class))
   resRef <- paste("ref.class<-\"",ref.class,"\"",sep="") else
   resRef <- "ref.class=NULL"
 
-  
-if (!is.null(block.column))
-  resBlock <- paste("block.column<-\"",block.column,"\"",sep="") else
-  resBlock <- "block.column=NULL"
-
-  
-  
-  
 if(!is.null(plot.label))
    resPl  <- paste("plot.label<-\"",plot.label,"\"",sep="") else
    resPl  <- "plot.label=NULL"
@@ -253,11 +229,9 @@ for ( j in possSeed){
              paste("PLR.info<-",PLR.info),
              paste("SVM.info<-",SVM.info),
              paste("GPLS.info<-",GPLS.info),
-	     paste("Strat     <-",Strat),
              paste("DataSet<- \"",DataSet,"\"",sep=""),
              paste("class.colum<-\"",class.colum,"\"",sep=""),
              resRef,
-	     resBlock,
              paste("thePreprocessingfunktionsRF<-",thePreprocessingfunktionsRF,sep=""),
 	     paste("thePreprocessingfunktionsPAM<-",thePreprocessingfunktionsPAM,sep=""),
 	     paste("thePreprocessingfunktionsPLR<-",thePreprocessingfunktionsPLR,sep=""),
@@ -300,32 +274,31 @@ SVMOk  <- ifelse(SVMAll,  all(file.exists(paste("backSVM",possSeed,".RData",sep=
 After the scripts are produced they can be  executed in parallel. Here we
 don't execute them in parallel but one after another.
 
-<<the call that executes the scripts in parallel,echo=FALSE,results=hide>>=
+<<the call that executes the scripts in parallel>>=
 #
-# das mhier ist der Teil wo man die verteilten Aufgaben losrechnen musss
 #
 #
 #
 if (!(RFOk & PAMOk & GPLSOk & PLROk & SVMOk)){
  if (RFAll)
   for ( j in possSeed)
-   system(paste("R --no-save <",paste("Pscript",j,"RFokay.R",sep="")))
+   system(paste("R4 --no-save <",paste("Pscript",j,"RFokay.R",sep="")))
 
 if (PAMAll)
  for ( j in possSeed)
-  system(paste("R --no-save <",paste("Pscript",j,"PAMokay.R",sep="")))
+  system(paste("R4 --no-save <",paste("Pscript",j,"PAMokay.R",sep="")))
  
 if (GPLSAll)
 for ( j in possSeed)
-  system(paste("R --no-save <",paste("Pscript",j,"GPLSokay.R",sep="")))
+  system(paste("R4 --no-save <",paste("Pscript",j,"GPLSokay.R",sep="")))
 
 if (PLRAll)
 for ( j in possSeed)
-  system(paste("R --no-save <",paste("Pscript",j,"PLRokay.R",sep="")))
+  system(paste("R4 --no-save <",paste("Pscript",j,"PLRokay.R",sep="")))
 
 if (SVMAll)
 for ( j in possSeed)
-  system(paste("R --no-save <",paste("Pscript",j,"SVMokay.R",sep="")))
+  system(paste("R4 --no-save <",paste("Pscript",j,"SVMokay.R",sep="")))
 
 }
 
@@ -343,7 +316,7 @@ if(file.access("backRF.RData")==0)
 }else{ 
   ForestList <- vector(mode="list",length=length(possSeed))
   for ( j in 1:length(possSeed))
-  ForestList[[j]] <- MyLoad(paste("backRF",possSeed[j],".RData",sep=""))
+  ForestList[[j]] <- get(load(paste("backRF",possSeed[j],".RData",sep="")))
   r.forest <-MCRestimateMerge(ForestList)
   save(r.forest,file="backRF.RData")
    }
@@ -355,7 +328,7 @@ if(GPLSAll){
  }else{
    GplsList <- vector(mode="list",length=length(possSeed))
    for ( j in 1:length(possSeed))
-     GplsList[[j]] <- MyLoad(paste("backGPLS",possSeed[j],".RData",sep=""))
+     GplsList[[j]] <- get(load(paste("backGPLS",possSeed[j],".RData",sep="")))
    r.gpls   <-MCRestimateMerge(GplsList)
    save(r.gpls,file="backGPLS.RData")
 }}
@@ -366,7 +339,7 @@ if(file.access("backPAM.RData")==0)
 }else{
   PamList <- vector(mode="list",length=length(possSeed))
   for ( j in 1:length(possSeed))
-    PamList[[j]] <- MyLoad(paste("backPAM",possSeed[j],".RData",sep=""))
+    PamList[[j]] <- get(load(paste("backPAM",possSeed[j],".RData",sep="")))
   r.pam   <-MCRestimateMerge(PamList)
   save(r.pam,file="backPAM.RData")
 }}
@@ -377,7 +350,7 @@ if(PLRAll){
  }else{
    PlrList <- vector(mode="list",length=length(possSeed))
    for ( j in 1:length(possSeed))
-     PlrList[[j]] <- MyLoad(paste("backlogReg",possSeed[j],".RData",sep=""))
+     PlrList[[j]] <- get(load(paste("backlogReg",possSeed[j],".RData",sep="")))
    r.logReg   <-MCRestimateMerge(PlrList)
    save(r.logReg,file="backPLR.RData")
  }
@@ -389,7 +362,7 @@ if(SVMAll){
  }else
    {SvmList <- vector(mode="list",length=length(possSeed))
    for ( j in 1:length(possSeed))
-     SvmList[[j]] <- MyLoad(paste("backSVM",possSeed[j],".RData",sep=""))
+     SvmList[[j]] <- get(load(paste("backSVM",possSeed[j],".RData",sep="")))
    r.svm <-MCRestimateMerge(SvmList)
    save(r.svm,file="backSVM.RData")
  }

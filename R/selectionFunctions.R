@@ -5,7 +5,6 @@ identity <- function(sample.gene.matrix,classfactor,...) list(matrix=sample.gene
 ## 500 Gene with highest t-statistic ##
 #######################################
 
-varSel.identity <- function(sample.gene.matrix,classfactor,...) list(matrix=sample.gene.matrix,parameter=NULL)
 
 # exprSet version
 

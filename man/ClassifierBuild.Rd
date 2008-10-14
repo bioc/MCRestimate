@@ -4,14 +4,15 @@
 \alias{ClassifierBuild.exprSetRG}
 \title{Building a classifier as a combination of preprocessing and
   classification method}
-\description{This function builds a classifier as a combination of preprocessing and classification methods. The resulting object can be used for new data.}
+\description{builds a classifier as a combination of preprocessing and
+  classification methods}
 \usage{
 ClassifierBuild(eset,
                 class.column,
                 reference.class=NULL,
                 classification.fun,
-                variableSel.fun ="varSel.identity",
-                cluster.fun ="varSel.identity",
+                variableSel.fun ="identity",
+                cluster.fun ="identity",
                 poss.parameters=list(),
                 cross.inner=10,
                 rand=123,

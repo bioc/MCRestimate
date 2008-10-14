@@ -94,7 +94,7 @@ new.table    <- matrix(0,ncol=nrow(vote.table),
 new.table[,colnames(vote.table)] <- vote.table
 normed.table         <- new.table/rowSums(new.table)
 confusion            <- cbind(new.table, 1-diag(normed.table))
-colnames(confusion)  <- c(colnames(new.table), "class error")
+colnames(confusion)  <- c(levels(MCRestimateList[[1]]$classes), "class error")
 
 result <- MCRestimateList[[1]]
 result$votes              <- votal.matrix

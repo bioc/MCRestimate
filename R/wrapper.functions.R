@@ -13,6 +13,19 @@
 ################################################################################################################
   
 
+###########################
+##### Gaussian Process ####
+###########################
+
+#GP.wrap <- function (x,y,kernel="rbfdot",...){
+#	require(kernlab)
+#	#level.y <- levels(y)
+#	level.y <- as.character(y)
+#	fit <- gausspr(x,level.y,kernel=as.character(kernel),cross=0)
+#	predict.function <- function(testmatrix) return(predict(fit,testmatrix))
+#	return(list(predict=predict.function,info=matrix(colnames(x),ncol=1)))
+#}
+
 
 ###########################
 ##### RandomForest     ####
@@ -22,7 +35,7 @@
 RF.wrap <- function (x,y,...)
   { require(randomForest)
     forest <- randomForest(x,y,importance=TRUE,...)
-    names <- forest$importance[(forest$importance[,"MeanDecreaseAccuracy"] > 0),,drop=FALSE]
+    names <- forest$importance[(forest$importance[,"MeanDecreaseAccuracy"] > 0),]
     names <- names[order(names[,"MeanDecreaseAccuracy"],decreasing=TRUE),]
     names <- cbind(rownames(names),names)
     predict.function <- function(testmatrix) return(predict(forest,testmatrix))

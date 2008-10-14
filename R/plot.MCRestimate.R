@@ -15,6 +15,8 @@ plot.MCRestimate <- function(x,
     { vote.matrix        <- x$votes
       class.factor       <- x$classes
       sample.names       <- x$sample.names
+      if (is.null(sample.names))
+        sample.names <- 1:nrow(vote.matrix)
     }
 else if(is.matrix(x))
   { vote.matrix      <- x
@@ -28,6 +30,7 @@ else if(is.matrix(x))
   } else {
     stop("'x' must be a matrix or an object of class MCRestimate")
   }
+
   correct.prediction <- x$correct.prediction
   correct.class.vote <- x$correct.class.vote
   
@@ -108,15 +111,15 @@ else if(is.matrix(x))
      abline(v=i,lty=2,col="grey")
 
      ## lines to separate the blocks 
-     #if( i > 1 ){
-     #  if( "block.factor" %in% names(x) ){
-     #    if( !is.null(x$block.factor) ){
-     ##      if( x$block.factor[order.index][i-1] !=  x$block.factor[order.index][i] ){
-     #        abline(v=i-0.5, col="grey")
-     ##      }
-     #    }
-     #  }
-     #}
+     if( i > 1 ){
+       if( "block.factor" %in% names(x) ){
+         if( !is.null(x$block.factor) ){
+           if( x$block.factor[order.index][i-1] !=  x$block.factor[order.index][i] ){
+             abline(v=i-0.5, col="grey")
+           }
+         }
+       }
+     }
    }  
 
 
