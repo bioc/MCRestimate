@@ -25,5 +25,32 @@ SVM.OVA.wrap(x,y,gamma = NULL, kernel = "radial", ...)
 
 \seealso{\code{\link{MCRestimate}}}
 
-\examples{}
-\keyword{}
+\examples{
+\dontrun{
+library(MCRestimate)
+library(golubEsets)
+data(Golub_Train)
+
+class.column <- "ALL.AML"
+Preprocessingfunctions <- c("varSel.highest.var")
+list.of.poss.parameter <- list(var.numbers = c(250,1000))
+
+Preprocessingfunctions <- c("identity")
+class.function <- "SVM.OVA.wrap"
+list.of.poss.parameter <- list(gamma = 6)
+plot.label <- "Samples"
+
+cross.outer <- 10
+cross.repeat <- 20
+cross.inner <- 5
+
+SVM.estimate <- MCRestimate(Golub_Train,
+		class.column,
+		classification.fun = class.function,
+		thePreprocessingMethods = Preprocessingfunctions,
+		poss.parameters = list.of.poss.parameter,
+		cross.outer = cross.outer, cross.inner = cross.inner,
+		cross.repeat = cross.repeat, plot.label = plot.label)
+
+}}
+\keyword{file}

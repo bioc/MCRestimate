@@ -1,7 +1,6 @@
 \name{MCRestimate}
 \alias{MCRestimate}
 \alias{MCRestimate.default}
-\alias{MCRestimate.exprSetRG}
 \alias{print.MCRestimate}
 \title{Estimation of misclassification error by cross-validation}
 \description{Several repetitions of a cross-validation are performed to
@@ -97,4 +96,4 @@ result
 if (interactive()) {
   x11(width=9, height=4)}
 plot(result)}
-\keyword{}
+\keyword{file}

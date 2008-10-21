@@ -25,5 +25,16 @@ important.variable.names(mcr,file="important_variables",listName=NULL,writeFile=
   with variable information.}
 
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}}
-\examples{}
-\keyword{}
+\examples{
+\dontrun{
+PAM.estimate <- MCRestimate(Golub_Train,
++		class.column,
++		classification.fun = class.function,
++		thePreprocessingMethods = Preprocessingfunctions,
++		poss.parameters = list.of.poss.parameter,
++		cross.outer = cross.outer, cross.inner = cross.inner,
++		cross.repeat = cross.repeat, plot.label = plot.label)
+
+		important.variable.names(PAM.estimate)
+}}
+\keyword{file}

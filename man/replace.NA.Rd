@@ -16,5 +16,5 @@ replace.NA(x, replacement, byRow = TRUE)
 
 \value{The numeric input matrix with replaced NA values.}
 \author{Patrick Warnat \url{mailto:p.warnat@dkfz-heidelberg.de}}
-\examples{}
-\keyword{}
+
+\keyword{file}

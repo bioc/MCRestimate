@@ -24,7 +24,7 @@ plotIndGroupVotes(MCRest,
   \item{MCRe}{Object of S3 class \code{MCRestimate}}
 	\item{perGroup}{returns a vector with the individual number of incorrect classified samples for each group}
 
-  \item{MCRest}{Object of S3 class \code{MCRestimate}}
+  \item{MCRest}{Object of S3 class \code{MCRestimate} }
   \item{PvD}{Offset of the text that belongs to a specific point in the plot}
   \item{dotCol}{Color of the dots}
   \item{errCol}{Line color between points}
@@ -33,8 +33,6 @@ plotIndGroupVotes(MCRest,
   \item{...}{Advanced options to the \code{plot} command}
 
 }
-
- }
 
 \value{ \code{MCRindError} returns a vector of individual errors.}
 
@@ -53,6 +51,6 @@ MCRindError(result1)
 }
 
 
-\keyword{}
+\keyword{file}
 
 

@@ -13,7 +13,8 @@ MCRwrongsamples(x,
 
 MCRconfusion(x,
              col.names=names(x),
-             row.names=NULL)	 }
+             row.names=NULL)
+             }
                  
 \arguments{
   \item{x}{List of objects of S3 class \code{MCRestimate}}
@@ -27,7 +28,6 @@ MCRconfusion(x,
   \item{row.names}{Vector of strings used for row names. If not specified the names of the groups are used}
 }
 
- }
 
 \value{ \code{MCRwrongsamples} returns a matrix and \code{MCRconfusion} returns a confusion matrix.}
 
@@ -48,6 +48,6 @@ MCRconfusion(list(result1,result2),col.names=c("Random Forest","PAM"))
 }
 
 
-\keyword{}
+\keyword{file}
 
 

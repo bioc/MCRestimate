@@ -1,7 +1,6 @@
 \name{ClassifierBuild}
 \alias{ClassifierBuild}
 \alias{ClassifierBuild.default}
-\alias{ClassifierBuild.exprSetRG}
 \title{Building a classifier as a combination of preprocessing and
   classification method}
 \description{builds a classifier as a combination of preprocessing and
@@ -46,5 +45,13 @@ ClassifierBuild(eset,
   \item{information}{classificator specific data}
 }
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}}
-\examples{## please have a look at the vignette of this package}
-\keyword{}
+\examples{
+\dontrun{RF.classifier <- ClassifierBuild(Golub_Train,
++     class.colum, classification.fun = "RF.wrap",
++     thePreprocessingMethods = Preprocessingfunctions,
++     poss.parameters = list.of.poss.parameter,
++     cross.inner = cross.inner)
+
+}
+}
+\keyword{file}

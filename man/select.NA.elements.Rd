@@ -16,5 +16,5 @@ select.NA.elements(x, NAthreshold, byRow = TRUE)
 logical vector containing the row or column selection. If argument byRow = TRUE, then value contains as many values as the input matrix contains rows, else it contains as many values as the input matrix contains columns.
 }
 \author{Patrick Warnat \url{mailto:p.warnat@dkfz-heidelberg.de}}
-\examples{}
-\keyword{}
+
+\keyword{file}

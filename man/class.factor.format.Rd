@@ -23,4 +23,5 @@
 data(Golub_Train)
 class.factor.format(Golub_Train[,28:35], "FAB",reference="M1")}
 
-\keyword{}
+\keyword{file}
+

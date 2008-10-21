@@ -69,6 +69,6 @@ m <- matrix(c(rnorm(10,2,0.5),rnorm(10,4,0.5),rnorm(10,7,0.5),rnorm(10,2,0.5),rn
 cluster.kmeans.mean(m ,number.clusters=3)
 }
 
-\keyword{}
+\keyword{file}
 
 

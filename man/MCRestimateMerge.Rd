@@ -16,6 +16,4 @@ MCRestimateMerge(MCRestimateList)}
 \seealso{\code{\link{MCRestimate}}}
 
 
-\examples{## please have a look at the vignette in the scripts folder}
-
-\keyword{}
+\keyword{file}
