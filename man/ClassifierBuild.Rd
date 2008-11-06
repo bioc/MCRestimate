@@ -46,12 +46,23 @@ ClassifierBuild(eset,
 }
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}}
 \examples{
-\dontrun{RF.classifier <- ClassifierBuild(Golub_Train,
-+     class.colum, classification.fun = "RF.wrap",
-+     thePreprocessingMethods = Preprocessingfunctions,
-+     poss.parameters = list.of.poss.parameter,
-+     cross.inner = cross.inner)
 
-}
+library(MCRestimate)
+library(golubEsets)
+data(Golub_Train)
+
+class.column <- "ALL.AML"
+Preprocessingfunctions <- c("varSel.highest.var")
+list.of.poss.parameter <- list(var.numbers = c(250,1000))
+classification.funct <- "RF.wrap"
+cross.inner <- 5
+
+RF.classifier <- ClassifierBuild(Golub_Train,
+     class.column,
+			classification.fun = classification.funct,
+     thePreprocessingMethods = Preprocessingfunctions,
+     poss.parameters = list.of.poss.parameter,
+     cross.inner = cross.inner)
+
 }
 \keyword{file}

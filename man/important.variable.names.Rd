@@ -26,15 +26,32 @@ important.variable.names(mcr,file="important_variables",listName=NULL,writeFile=
 
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}}
 \examples{
-\dontrun{
+library(MCRestimate)
+library(golubEsets)
+data(Golub_Train)
+
+
+class.column <- "ALL.AML"
+list.of.poss.parameter <- list(var.numbers = c(250,1000))
+Preprocessingfunctions <- c("identity")
+list.of.poss.parameter <- list(threshold = 6)
+class.function <- "PAM.wrap"
+plot.label <- "Samples"
+
+cross.outer <- 10
+cross.repeat <- 7
+cross.inner <- 5
+
 PAM.estimate <- MCRestimate(Golub_Train,
-+		class.column,
-+		classification.fun = class.function,
-+		thePreprocessingMethods = Preprocessingfunctions,
-+		poss.parameters = list.of.poss.parameter,
-+		cross.outer = cross.outer, cross.inner = cross.inner,
-+		cross.repeat = cross.repeat, plot.label = plot.label)
+		class.column,
+		classification.fun = class.function,
+		thePreprocessingMethods = Preprocessingfunctions,
+		poss.parameters = list.of.poss.parameter,
+		cross.outer = cross.outer,
+		cross.inner = cross.inner,
+		cross.repeat = cross.repeat,
+		plot.label = plot.label)
 
 		important.variable.names(PAM.estimate)
-}}
+}
 \keyword{file}

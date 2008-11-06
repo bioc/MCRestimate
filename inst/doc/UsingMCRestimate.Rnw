@@ -128,7 +128,7 @@ RF.estimate <- MCRestimate(Golub_Train,
 @
 The result is an element of class \Rclass{MCRestimate}
 <<rf.show>>=
-RF.estimate
+class(RF.estimate)
 @
 For each group we see how many samples have been misclassified most of the time. 
 We can also visualize the result. The plot shows for each sample the number of

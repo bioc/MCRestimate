@@ -40,21 +40,20 @@ GPLS.wrap(x,y,\dots)
 \seealso{\code{\link{MCRestimate}}}
 
 \examples{
-\dontrun{
 library(MCRestimate)
 library(golubEsets)
 data(Golub_Train)
 
 class.column <- "ALL.AML"
 Preprocessingfunctions <- c("varSel.highest.var")
-list.of.poss.parameter <- list(var.numbers = c(250,1000))
+list.of.poss.parameter <- list(threshold = 6)
 
 Preprocessingfunctions <- c("identity")
-class.function <- "SVM.wrap"
+class.function <- "PAM.wrap"
 plot.label <- "Samples"
 
 cross.outer <- 10
-cross.repeat <- 20
+cross.repeat <- 7
 cross.inner <- 5
 
 PAM.estimate <- MCRestimate(Golub_Train,
@@ -64,8 +63,6 @@ PAM.estimate <- MCRestimate(Golub_Train,
 		poss.parameters = list.of.poss.parameter,
 		cross.outer = cross.outer, cross.inner = cross.inner,
 		cross.repeat = cross.repeat, plot.label = plot.label)
-
-}
 }
 
 \keyword{file}

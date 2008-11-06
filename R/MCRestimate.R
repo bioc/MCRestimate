@@ -100,10 +100,15 @@ MCRestimate.default <- function(eset,
 
   predicted <- function(model,test) return(model(test))
 
-  my.balanced.folds <- function(class.column.factor, cross.outer){
+	# used for stratified(balanced) classification
+  my.balanced.folds <- function(class.column.factor, cross.outer)
+	{
+		# get balanced folds from pamr
     sampleOfFolds  <- get("balanced.folds",en=asNamespace("pamr"))(class.column.factor, nfolds=cross.outer)
     permutated.cut <- rep(0,length(class.column.factor))
-    for (sample in 1:cross.outer){
+    for (sample in 1:cross.outer)
+		{
+			cat(sample,"\n")
       permutated.cut[sampleOfFolds[[sample]]] <- sample
     }
     return(permutated.cut)
@@ -167,24 +172,33 @@ MCRestimate.default <- function(eset,
     the.votes.per.cv             <- matrix(0, ncol=nlevels.class,nrow=nn)
     rownames(the.votes.per.cv)   <- class.column.factor
     colnames(the.votes.per.cv)   <- levels.class
-    if( ! is.null(block.column) ){
-
-      if( stratify ){
+    if( ! is.null(block.column) )
+		{
+      if( stratify )
+			{
         permutated.block.cut <- my.balanced.folds(class.column.factor.blocks, cross.outer)
-      }else{
+      }
+			else
+			{
         permutated.block.cut <- sample(the.block.cut,nb)
       }
       permutated.cut <- rep(NA, nn)
-      for (sample in 1:cross.outer){
+      for (sample in 1:cross.outer)
+			{
         blockSel <- which(permutated.block.cut == sample)
         blocks <- the.blocks[!duplicated(the.blocks)][blockSel]
         permutated.cut[the.blocks %in% blocks] <- sample
       }      
-    }else{
-      if (stratify){
+    }
+		else
+		{
+      if (stratify)
+			{
         permutated.cut <- my.balanced.folds(class.column.factor, cross.outer)
-      }else{
-        permutated.cut <- sample(the.cut,nn)
+      }
+			else
+			{
+				permutated.cut <- sample(the.cut,nn)
       }
     }
         
