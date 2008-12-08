@@ -11,7 +11,7 @@
   \item{resultvector}{a vector which contains the labeling of the samples}
   \item{trainmatrix}{a matrix which includes the data. The rows corresponds to the observations and the colums to the variables.}
   \item{kappa}{value range for penalty parameter. If more that one parameter is specified the one with the lowest AIC will be used.}
-  \item{eps} {precision of convergence}
+  \item{eps}{precision of convergence}
   \item{object}{a fitted PLR model}
   \item{...}{here a data matrix from samples that should be predicted}
 }

@@ -51,9 +51,9 @@ completely assigned to the test or to the training set}
 }
 
 \value{an object of class \code{MCRestimate} which is a \code{list} with fourteen arguments:
- \item{votes}  {a matrix consisting of the different votes for each sample}
+ \item{votes}{a matrix consisting of the different votes for each sample}
  \item{classes}{the class of each sample}
- \item{table}  {a 'confusion' table, shows the number of 'correct prediction' for each class}
+ \item{table}{a 'confusion' table, shows the number of 'correct prediction' for each class}
  \item{correct.prediction}{a logical vector - indicates if a sample was
    predicted to be a member of the correct class at least as often as it was predicted to be a member of each other class.}
  \item{correct.class.vote}{vector that contains for every sample the vote for it's correct class}

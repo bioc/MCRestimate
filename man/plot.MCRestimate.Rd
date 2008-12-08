@@ -29,10 +29,10 @@
     class membership}
   \item{legend}{Logical. If TRUE then there will be a small legend
     in the output}
-  \item{mypalette} {vector with length equal to the number of
+  \item{mypalette}{vector with length equal to the number of
     classes. The vector specifies the color for the bar representing the
     classes. If 'NULL' colors choosen by the author are used.}
-  \item{shading} {the density of shading lines for the rectagles that indicate the groups, in lines per inch. The default
+  \item{shading}{the density of shading lines for the rectagles that indicate the groups, in lines per inch. The default
           value of 'NULL' means that no shading lines are drawn.}
   \item{xlab}{Character}
   \item{ylab}{Character}
