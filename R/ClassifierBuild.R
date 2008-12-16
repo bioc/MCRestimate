@@ -122,7 +122,7 @@ ClassifierBuild.default <- function(eset,
     parameter.list <- as.data.frame(poss.parameters)
  }
   
-  predict.function <- do.call("the.function.for.classification", c(list(x=train.matrix,y=train.factor),parameter.list))
+  predict.function <- do.call(the.function.for.classification, c(list(x=train.matrix,y=train.factor),parameter.list))
      
 
   classificationFunction <- function (eset){

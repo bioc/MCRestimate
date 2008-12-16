@@ -110,7 +110,7 @@ varName <- "permutated.cut.matrix"
 if( varName %in% as.vector(sapply(MCRestimateList, names))){
   aa <- lapply(MCRestimateList, function(x) dim(x[[varName]]) )
   stopifnot(all(sapply(aa, function(x) identical(x,aa[[1]]))))
-  new.permutated.cut.matrix <- do.call("cbind", args=lapply(MCRestimateList, function(x) x[[varName]]))
+  new.permutated.cut.matrix <- do.call(cbind, args=lapply(MCRestimateList, function(x) x[[varName]]))
   result[[varName]] <- new.permutated.cut.matrix
 }
 
