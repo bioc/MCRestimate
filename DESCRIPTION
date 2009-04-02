@@ -10,4 +10,3 @@ Depends: R (>= 2.7.2), e1071 (>= 1.5-12), pamr (>= 1.22),randomForest (>= 3.9-6)
 Suggests: xtable (>= 1.2-1), ROC (>= 1.8.0), genefilter (>= 1.12.0), gpls (>= 1.6.0)
 biocViews: Bioinformatics, Classification
 LazyLoad: yes
-Packaged: Mon Aug 11 13:20:34 2008; ruser
