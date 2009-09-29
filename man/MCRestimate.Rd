@@ -24,7 +24,7 @@ MCRestimate(eset,
             block.column=NULL,
             thePreprocessingMethods=c(variableSel.fun,cluster.fun))}
 \arguments{
-  \item{eset}{an object of class \code{exprSet}}
+  \item{eset}{an object of class \code{ExpressionSet}}
   \item{class.column}{a number or a character string which indicates the column of the
 expression set's phenodata containing the class label}
   \item{reference.class}{a character string - the name of one class - if
@@ -66,7 +66,8 @@ completely assigned to the test or to the training set}
  \item{sample.names}{names of the sample}
  \item{information}{classificator specific data (if information is TRUE)}
 }
-\details{The argument 'thePreprocessingMethods' can be used instead of 'variableSel.fun'
+\details{The argument 'thePreprocessingMethods' can be used instead of
+ 'variableSel.fun' 
    and 'cluster.fun'. In the first versions of MCRestimate it was only
    possible to have one variable selection and one cluster
    functions. Now it is possible to have more than two functions and the
@@ -75,7 +76,7 @@ completely assigned to the test or to the training set}
    selection function.
 
  If MCRestimate is used with an object of class
- \code{\link[arrayMagic]{exprSetRG-class}}, the preprocessing steps can use the
+ \code{exprSetRG-class}, the preprocessing steps can use the
  green and the red channel seperately but the classification methods
  works with green channel - red channel.
 
@@ -85,13 +86,15 @@ completely assigned to the test or to the training set}
  is also 'correct' if it has been predicted correctly half of the time. 
 }
 
-\author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}, contributions from Andreas Buness and Patrick Warnat}
+\author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de},
+  contributions from Andreas Buness and Patrick Warnat} 
 \examples{
 library(MCRestimate)
 library(golubEsets)
 data(Golub_Test)
 G2 <- Golub_Test[1:500,]
-result <- MCRestimate(G2,"ALL.AML",classification.fun="RF.wrap",cross.outer=4,cross.repeat=3)
+result <- MCRestimate(G2, "ALL.AML", classification.fun="RF.wrap",
+                      cross.outer=4, cross.repeat=3)
 result
 if (interactive()) {
   x11(width=9, height=4)}
