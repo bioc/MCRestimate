@@ -25,7 +25,7 @@ GPLS.wrap(x,y,\dots)
     each sample}
    \item{threshold}{the threshold for PAM}
    \item{kappa}{the penalty parameter for the penalised logistic regression}
-   \item{eps}{}
+   \item{eps}{precision of convergence}
    \item{gamma}{parameter for support vector machines}
    \item{kernel}{parameter for support vector machines}
   \item{\dots}{Further parameters}
