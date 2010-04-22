@@ -29,7 +29,7 @@ ClassifierBuild(eset,
  \item{poss.parameters}{a list of possible values for the parameter of the classification method}
  \item{cross.inner}{integer - the number of nearly equal sized parts the train set should be divided into}
  \item{rand}{integer - the random number generator will be put in a reproducible state}
- \item{information}{information - should classificator specific data be given(depends on the wrapper for the classification method)}
+ \item{information}{information - should classifier specific data be given(depends on the wrapper for the classification method)}
 }
 
 \value{a \code{list} with the following arguments:
@@ -42,7 +42,7 @@ ClassifierBuild(eset,
  \item{thePreprocessingMethods}{character string - name of the
    preprocessing functions that have been used}
   \item{cross.inner}{number of blocks for a the inner cross-validation}
-  \item{information}{classificator specific data}
+  \item{information}{classifier specific data}
 }
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}}
 \examples{

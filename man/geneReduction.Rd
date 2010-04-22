@@ -26,12 +26,12 @@
     genes and the colums corresponds to samples}
   \item{classfactor}{a factor containing the values that should be predicted}
   \item{theParameter}{Parameter that depends on the function. For
-    'cluster.kmeans.mean' eighter NULL or an output of the function
+    'cluster.kmeans.mean' either NULL or an output of the function
     \code{kmeans}. If it is NULL then \code{kmeans} will be used to
     form clusters of the genes. Otherwise the already existing clusters
     will be used. In both ways there will be a calculation of the
-    metagene intensities afterwards. For the other functions eighter
-    NULL or a logical vector which indicates for every gene if it sould
+    metagene intensities afterwards. For the other functions either
+    NULL or a logical vector which indicates for every gene if it should
     be left out from further analysis or not}
   \item{number.clusters}{parameter which specifies the number of clusters}  
   \item{var.numbers}{some methods needs an argument which specifies
@@ -41,7 +41,7 @@
   \item{\dots}{Further parameters}
 }
 
-\details{ \code{metagene.kmeans.mean} performes a kmeans clustering with
+\details{ \code{metagene.kmeans.mean} performs a kmeans clustering with
   a number of clusters specified by 'number clusters' and takes the mean
   of each cluster. \code{varSel.highest.var} selects a number (specified
   by 'var.numbers') of variables  with the highest variance. \code{varSel.AUC} chooses the
@@ -52,7 +52,7 @@
 
   
 \value{Every function returns a list consisting of two arguments:
-  \item{matrix}{the result matrix of the variable redution or the clustering}
+  \item{matrix}{the result matrix of the variable reduction or the clustering}
   \item{parameter}{The parameter which are used to reproduce the
     algorithm, i.e. a vector which indicates for every gene if it will
     be left out from further analysis or not if a gene reduction is

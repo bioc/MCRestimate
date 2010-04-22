@@ -2,7 +2,7 @@
 \alias{MCRconfusion}
 \alias{MCRwrongsamples}
 \title{Summary tables for MCRestimate objects}
-\description{\code{MCRwrongsamples} returns a matrix with all the samples that have a higher frequency of being predicted as a member of a wrong class than of the correct class for at least one classification method. \code{MCRconfusion} summarizes the result of the vote matices}
+\description{\code{MCRwrongsamples} returns a matrix with all the samples that have a higher frequency of being predicted as a member of a wrong class than of the correct class for at least one classification method. \code{MCRconfusion} summarizes the result of the vote matrices}
 
 \usage{
 MCRwrongsamples(x,

@@ -14,7 +14,7 @@
 SVM.OVA.wrap(x,y,gamma = NULL, kernel = "radial", ...)
 }
 \arguments{
-  \item{x,y}{x is a matrix where each row refers to a sample and  each colum refers to a gene; y is a factor which includes the class for each sample}
+  \item{x,y}{x is a matrix where each row refers to a sample and each column refers to a gene; y is a factor which includes the class for each sample}
   \item{gamma}{parameter for support vector machines}
   \item{kernel}{parameter for support vector machines}
   \item{\dots}{Further parameters}

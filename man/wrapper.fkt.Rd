@@ -21,7 +21,7 @@ GPLS.wrap(x,y,\dots)
 
 \arguments{
   \item{x,y}{x is a matrix where each row refers to a sample a each
-    colum refers to a gene; y is a factor which includes the class for
+    column refers to a gene; y is a factor which includes the class for
     each sample}
    \item{threshold}{the threshold for PAM}
    \item{kappa}{the penalty parameter for the penalised logistic regression}

@@ -31,8 +31,8 @@
     in the output}
   \item{mypalette}{vector with length equal to the number of
     classes. The vector specifies the color for the bar representing the
-    classes. If 'NULL' colors choosen by the author are used.}
-  \item{shading}{the density of shading lines for the rectagles that indicate the groups, in lines per inch. The default
+    classes. If 'NULL' colors chosen by the author are used.}
+  \item{shading}{the density of shading lines for the rectangles that indicate the groups, in lines per inch. The default
           value of 'NULL' means that no shading lines are drawn.}
   \item{xlab}{Character}
   \item{ylab}{Character}

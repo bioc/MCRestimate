@@ -9,7 +9,7 @@
        \method{predict}{PLR}(object,...)}
 \arguments{
   \item{resultvector}{a vector which contains the labeling of the samples}
-  \item{trainmatrix}{a matrix which includes the data. The rows corresponds to the observations and the colums to the variables.}
+  \item{trainmatrix}{a matrix which includes the data. The rows corresponds to the observations and the columns to the variables.}
   \item{kappa}{value range for penalty parameter. If more that one parameter is specified the one with the lowest AIC will be used.}
   \item{eps}{precision of convergence}
   \item{object}{a fitted PLR model}
@@ -20,7 +20,7 @@
 
 \value{a list with three arguments
   \item{a}{Intercept estimate of the linear predictor}
-  \item{b}{vector of estimated regresion coefficients}
+  \item{b}{vector of estimated regression coefficients}
   \item{factorlevel}{levels of grouping variable}
   \item{aics}{vector of AIC values with respect to penalty parameter kappa}
   \item{trs}{vector of effective degrees of freedom with respect to penalty parameter kappa}

@@ -47,7 +47,7 @@ will form the second class }
 expression set's phenodata containing the blocking covariate, which sets 
 a constrain on the cross-validation splits: each block is either
 completely assigned to the test or to the training set}
-  \item{information}{information - should classificator specific data be given(depends on the wrapper for the classification method)}
+  \item{information}{information - should classifier specific data be given(depends on the wrapper for the classification method)}
 }
 
 \value{an object of class \code{MCRestimate} which is a \code{list} with fourteen arguments:
@@ -64,7 +64,7 @@ completely assigned to the test or to the training set}
  \item{cross.repeat}{number of outer cross-validation repetitions}
  \item{cross.inner}{number of blocks for a the inner cross-validation}
  \item{sample.names}{names of the sample}
- \item{information}{classificator specific data (if information is TRUE)}
+ \item{information}{classifier specific data (if information is TRUE)}
 }
 \details{The argument 'thePreprocessingMethods' can be used instead of
  'variableSel.fun' 
@@ -72,12 +72,12 @@ completely assigned to the test or to the training set}
    possible to have one variable selection and one cluster
    functions. Now it is possible to have more than two functions and the
    ordering is arbitrary, e.g. you can have a variable selection
-   function, then a cluster function and then a seccond variable
+   function, then a cluster function and then a second variable
    selection function.
 
  If MCRestimate is used with an object of class
  \code{exprSetRG-class}, the preprocessing steps can use the
- green and the red channel seperately but the classification methods
+ green and the red channel separately but the classification methods
  works with green channel - red channel.
 
  Note: 'correct prediction' means that a sample was predicted to be
