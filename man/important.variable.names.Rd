@@ -26,7 +26,6 @@ important.variable.names(mcr,file="important_variables",listName=NULL,writeFile=
 
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}}
 \examples{
-library(MCRestimate)
 library(golubEsets)
 data(Golub_Train)
 

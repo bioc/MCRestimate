@@ -47,7 +47,6 @@ ClassifierBuild(eset,
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}}
 \examples{
 
-library(MCRestimate)
 library(golubEsets)
 data(Golub_Train)
 

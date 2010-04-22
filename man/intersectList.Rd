@@ -10,7 +10,6 @@
 \value{A list containing all possible intersections.}
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de}}
 \examples{
-library(MCRestimate)
 a <- list (x=1:5,y=3:4,z=c(1,3,3))
 intersectList(a)
 }

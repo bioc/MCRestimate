@@ -40,7 +40,6 @@ GPLS.wrap(x,y,\dots)
 \seealso{\code{\link{MCRestimate}}}
 
 \examples{
-library(MCRestimate)
 library(golubEsets)
 data(Golub_Train)
 

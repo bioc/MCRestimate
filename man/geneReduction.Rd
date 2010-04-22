@@ -64,7 +64,7 @@
 \seealso{\code{\link{MCRestimate}}}
 
 
-\examples{library(MCRestimate)
+\examples{
 m <- matrix(c(rnorm(10,2,0.5),rnorm(10,4,0.5),rnorm(10,7,0.5),rnorm(10,2,0.5),rnorm(10,4,0.5),rnorm(10,2,0.5)),ncol=2)
 cluster.kmeans.mean(m ,number.clusters=3)
 }

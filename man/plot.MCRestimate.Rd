@@ -49,7 +49,6 @@
 
 
 \examples{
-  library(MCRestimate)
   x <- c(0.5, 0.3, 0.7, 0.3, 0.8, 0.2, 0.3)
   mat2 <- cbind(x, 1-x)
   fac2 <- factor(c("low", rep("high", 3), rep("low", 3)))

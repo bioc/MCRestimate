@@ -42,7 +42,6 @@ plotIndGroupVotes(MCRest,
 
 
 \examples{
-library(MCRestimate)
 library(golubEsets)
 data(Golub_Train)
 exSet <- Golub_Train[1:500,]

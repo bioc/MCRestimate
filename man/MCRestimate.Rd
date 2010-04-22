@@ -89,7 +89,6 @@ completely assigned to the test or to the training set}
 \author{Markus Ruschhaupt \url{mailto:m.ruschhaupt@dkfz.de},
   contributions from Andreas Buness and Patrick Warnat} 
 \examples{
-library(MCRestimate)
 library(golubEsets)
 data(Golub_Test)
 G2 <- Golub_Test[1:500,]

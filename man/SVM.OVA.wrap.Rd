@@ -27,7 +27,6 @@ SVM.OVA.wrap(x,y,gamma = NULL, kernel = "radial", ...)
 
 \examples{
 \dontrun{
-library(MCRestimate)
 library(golubEsets)
 data(Golub_Train)
 
