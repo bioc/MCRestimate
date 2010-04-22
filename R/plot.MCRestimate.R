@@ -10,7 +10,7 @@ plot.MCRestimate <- function(x,
                              xlab="Sample ID",
                              ylab="Frequency of correct classification",
                              cex.axis=1,...)
-{ require(RColorBrewer)
+{
   if("MCRestimate" %in% class(x))
     { vote.matrix        <- x$votes
       class.factor       <- x$classes

@@ -33,7 +33,7 @@
 
 
 RF.wrap <- function (x,y,...)
-  { require(randomForest)
+  {
     forest <- randomForest(x,y,importance=TRUE,...)
     names <- forest$importance[(forest$importance[,"MeanDecreaseAccuracy"] > 0),]
     names <- names[order(names[,"MeanDecreaseAccuracy"],decreasing=TRUE),]
@@ -69,7 +69,7 @@ PLR.wrap <- function(x,y,kappa=0,eps=1e-4,...)
 
 
 PAM.wrap <- function(x,y,threshold,...)
-  { require(pamr)
+  {
     if (is.null(colnames(x))) colnames(x) <- rep(1,ncol(x))
     trainlist<- list(x=t(x),y=y,geneid=colnames(x))
     model <- pamr.train(trainlist,threshold=threshold)
@@ -127,7 +127,7 @@ PAM.wrap <- function(x,y,threshold,...)
 
 
 SVM.wrap <- function(x,y,gamma=NULL,kernel="radial",...)
-  { require(e1071)
+  {
     if (!is.null(gamma)) {gamma <- gamma/ncol(x);model <- svm(x,y,gamma=gamma,kernel=as.character(kernel),...)}
     else model <- svm(x,y,kernel=as.character(kernel),...)
     predict.function <- function(testmatrix) return(predict(model,testmatrix))

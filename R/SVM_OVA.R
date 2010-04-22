@@ -2,7 +2,6 @@
 SVM.OVA.wrap <-
 function (x, y, gamma = NULL, kernel = "radial", ...)
 {
-    require(e1071)
     nclasses <- length(levels(y))
     #model.list will contain one model per class; every model is a binary classifier distinguishing elements of one class versus all others
     model.list<- list()

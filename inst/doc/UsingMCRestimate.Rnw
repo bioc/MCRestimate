@@ -6,9 +6,6 @@
 
 \usepackage{times}
 \usepackage{hyperref}
-
-\usepackage{natbib}
-\usepackage{times}
 \usepackage{comment}
 
 \textwidth=6.2in
@@ -37,8 +34,9 @@
 
 \section*{Estimation the misclassification error}
 Every classification task starts with data. Here we choose the well
-known ALL/AML data set from T.Golub~\cite{Golub.1999} availabel in the package \Rpackage{golubEsets}. Furthermore, we specify
- the name of the phenodata column that should be used for the classification.
+known ALL/AML data set from T.Golub~\cite{Golub.1999} available in the package
+\Rpackage{golubEsets}. Furthermore, we specify  the name of the phenodata
+column that should be used for the classification.
 
 <<arguments,results=hide>>=
 library(MCRestimate)
@@ -53,14 +51,15 @@ savepdf =function(x,file,w=10,h=5){pdf(file=file,width=w,height=w);x;dev.off()}
 options(width=50)
 @
 
-Cross-validation is an appropiate instrument to estimate the misclassification rate
-of an algorithm that should be used for classification. Often a  variable
+Cross-validation is an appropriate instrument to estimate the misclassification
+rate of an algorithm that should be used for classification. Often a variable
 selection or aggregation is applied to the data set before the main
-classification porcedure is started. But these steps must also be part of the
+classification procedure is started. But these steps must also be part of the
 cross-validation. In our example we want to perform a variable selection and
-only take the genes with the highest variance across all samples. Because we don't know exactly how many
-genes we want to have, we give two possible values (250 and 1000). The described methods is
-implemented in the functions \Rfunction{g.red.highest.var}. Further preprocessing functions are part of the
+only take the genes with the highest variance across all samples. Because we
+don't know exactly how many genes we want to have, we give two possible values
+(250 and 1000). The described methods is implemented in the functions
+\Rfunction{g.red.highest.var}. Further preprocessing functions are part of the
 package \Rpackage{MCRestimate} and also new functions can be implemented.
 
 
@@ -68,9 +67,9 @@ package \Rpackage{MCRestimate} and also new functions can be implemented.
 Preprocessingfunctions        <- c("varSel.highest.var")
 list.of.poss.parameter        <- list(var.numbers=c(250,1000))
 @
-To use \Rfunction{MCRestimate} with a classification procedure a wrapper for this
-method must be available. The package \Rpackage{MCRestimate} includes wrapper for the following classification
-functions.
+To use \Rfunction{MCRestimate} with a classification procedure a wrapper for
+this method must be available. The package \Rpackage{MCRestimate} includes
+wrapper for the following classification functions.
 
 \begin{description}
 \item[RF.wrap] wrapper for random forest (based on the package \Rpackage{randomForest})
@@ -86,12 +85,13 @@ random forest for our classification task.
 class.function                    <- "RF.wrap"
 @
 
-{\bf Parameter to optimize:} Most classification and preprocessing methods have parameters that must be
-choosen and/or optimized. In our example we choose two possible number of
-clusters for our preprocessing method.  In each cross-validation step \Rfunction{MCRestimate} will
-choose the value that have the lowes misclassification error on the training
-set. This will be estimated through a second (inner) cross-validation with the
-function tune available in the package \Rpackage{e1071}.
+{\bf Parameter to optimize:} Most classification and preprocessing methods have
+parameters that must be chosen and/or optimized. In our example we choose two
+possible number of clusters for our preprocessing method.  In each
+cross-validation step \Rfunction{MCRestimate} will choose the value that have
+the lowest misclassification error on the training set. This will be estimated
+through a second (inner) cross-validation with the function tune available in
+the package \Rpackage{e1071}.
 
 {\bf Parameter for the plot of the results (see man page for details):} We
 want to have the sample names as labels in the resulting plot. {\textit Samples}
@@ -102,8 +102,8 @@ plot.label               <- "Samples"
 @
 
 {\bf The Cross-validation parameter (see man page for details):} For time
-reasons here we choose very small values. Normally the values for  \Rfunarg{cross.outer} and
- \Rfunarg{cross.inner} should be at least 5.
+reasons here we choose very small values. Normally the values for
+\Rfunarg{cross.outer} and \Rfunarg{cross.inner} should be at least 5.
 
 
 <<ARGUMENTS FOR CROSS-VALIDSATION>>=
@@ -149,10 +149,10 @@ savepdf(plot(RF.estimate,rownames.from.object=TRUE, main="Random Forest"),"RF.pd
 \end{figure}
 
 \section*{New data}
-We have estimated the misclassification rate of our complete algorithm. Because this
-seems to be a quit good result, we want to use this algorithm to classify new
-data.  The function \Rfunction{ClassifierBuild} is used to build a classifier that can be
-used for new data.
+We have estimated the misclassification rate of our complete algorithm. Because
+this seems to be a quit good result, we want to use this algorithm to classify
+new data.  The function \Rfunction{ClassifierBuild} is used to build a
+classifier that can be used for new data.
 
 <<>>=
 RF.classifier <- ClassifierBuild (Golub_Train, 
@@ -171,8 +171,8 @@ The most important elements of this list are  \Rfunarg{classifier.for.matrix}
 and  \Rfunarg{classifier.for.exprSet}. These can now be used to classify
 new data. The first one can be used if the new data is given by a matrix and
 the second will be used if the new data is given by a \Rclass{exprSet}. Here we
-want to classify the data from the \Rclass{exprSet}  \Robject{golubTest}, that is
-also part of the  package \Rpackage{golubEsets}.
+want to classify the data from the \Rclass{exprSet}  \Robject{golubTest}, that
+is also part of the  package \Rpackage{golubEsets}.
 
 <<test>>=
 data(Golub_Test)
@@ -193,5 +193,3 @@ prediction by gene expression monitoring
 
 
 \end{document}
-
-

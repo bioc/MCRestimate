@@ -1,3 +1,14 @@
+importMethodsFrom(Biobase, exprs, pData)
+importFrom(e1071, svm, tune, tune.control)
+importFrom(graphics, abline, axis, barplot, box, hist, layout, par,
+           plot, points, rect, segments, text)
+importFrom(grDevices, dev.off, pdf)
+importFrom(pamr, pamr.predict, pamr.train)
+importFrom(randomForest, randomForest)
+importFrom(RColorBrewer, brewer.pal)
+importFrom(stats, kmeans, median, predict, quantile, sd, var)
+importFrom(utils, getFromNamespace, write.table)
+
 export(class.factor.format,
 ClassifierBuild,
 ClassifierBuild.default,
