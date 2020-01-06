@@ -1,6 +1,6 @@
 Package: MCRestimate
 Title: Misclassification error estimation with cross-validation
-Version: 2.43.0
+Version: 2.43.1
 Date: 21 April 2010
 Author: Marc Johannes, Markus Ruschhaupt, Holger Froehlich, Ulrich
         Mansmann, Andreas Buness, Patrick Warnat, Wolfgang Huber, Axel
@@ -18,3 +18,4 @@ Suggests: xtable (>= 1.2-1), ROC (>= 1.8.0), genefilter (>= 1.12.0),
         gpls (>= 1.6.0)
 LazyLoad: yes
 biocViews: Classification
+PackageStatus: Deprecated
